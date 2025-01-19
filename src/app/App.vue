@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import useCounterStore from '../stores/counter';
-
-const counterStore = useCounterStore();
+import Header from '../components/Header.vue';
 </script>
 
 <template>
-  <h1>Vue 3</h1>
+  <v-layout>
+    <Header />
 
-  <h3>{{ counterStore.count }} | {{ counterStore.doubleCount }}</h3>
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+  </v-layout>
 
-  <button @click="counterStore.increment">Increment</button>
-
-  <RouterView />
+  <v-footer color="primary d-flex justify-center py-3" :style="{ 'max-height': '50px' }">
+    <span class="font-weight-bold">Anki clone</span>
+  </v-footer>
 </template>
