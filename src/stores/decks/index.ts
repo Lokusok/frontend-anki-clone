@@ -29,6 +29,19 @@ export const useDeckStore = defineStore('deckStore', {
             this.waiting = false;
         },
 
+        async getAllDecksTitles(): Promise<{id: number, title: string}[] | null> {
+            const decks = await decksService.getAllDecks();
+
+            if (decks) {
+                return decks.map((d) => ({
+                    id: d.id,
+                    title: d.title,
+                }));
+            }
+
+            return null;
+        },
+
         async getDeck(id: TDeck['id']): Promise<TDeck | null> {
             this.waiting = true;
 

@@ -101,6 +101,14 @@ const drawer = ref(false);
         Создать коллекцию
       </v-list-item>
 
+      <v-list-item :disabled="!props.isAuth" :to="{ name: 'questions.create' }">
+        <template #prepend>
+          <v-icon icon="mdi-head-question"></v-icon>
+        </template>
+
+        Создание вопроса
+      </v-list-item>
+
       <v-list-item :disabled="!props.isAuth" :to="{ name: 'decks.search' }">
         <template #prepend>
           <v-icon icon="mdi-text-search"></v-icon>

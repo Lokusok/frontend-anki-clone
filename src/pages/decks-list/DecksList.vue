@@ -48,7 +48,7 @@ const deleteDeck = async () => {
         <v-progress-circular :size="50" color="primary" indeterminate />
       </div>
 
-      <v-table v-else fixed-header height="500px">
+      <v-table v-else fixed-header>
         <thead>
           <tr>
             <th class="text-center font-weight-bold">Название</th>
@@ -60,7 +60,7 @@ const deleteDeck = async () => {
           <tr v-for="deck in decksStore.decks" :key="deck.title">
             <td class="text-center">{{ deck.title }}</td>
             <td class="text-center">
-              {{ `${deck.ask_later}/${deck.ask_ready}` }}
+              {{ `${deck.ask_ready}/${deck.ask_later}` }}
             </td>
             <td class="d-flex justify-center">
               <div class="d-flex ga-2 py-2">

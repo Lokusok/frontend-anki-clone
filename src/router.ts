@@ -13,6 +13,7 @@ import DecksSearch from './pages/decks-search/DecksSearch.vue';
 import Profile from './pages/profile/Profile.vue';
 import { useSessionStore } from './stores/session';
 import DecksEdit from './pages/decks-edit/DecksEdit.vue';
+import QuestionsCreate from './pages/questions-create/QuestionsCreate.vue';
 
 const routes = [
   {
@@ -56,6 +57,14 @@ const routes = [
     },
   },
   {
+    path: '/questions/create',
+    component: QuestionsCreate,
+    name: 'questions.create',
+    meta: {
+      title: 'Создание вопроса',
+    },
+  },
+  {
     path: '/login',
     component: Login,
     name: 'login',
@@ -87,7 +96,7 @@ const router = createRouter({
 });
 
 const onlyGuests = ['login', 'register'];
-const onlyAuth = ['decks.index', 'decks.create', 'decks.search', 'profile'];
+const onlyAuth = ['decks.index', 'decks.create', 'decks.search', 'questions.create', 'profile'];
 
 export const accessTo = (to: RouteLocationNormalizedGeneric): boolean => {
   const sessionStore = useSessionStore();
