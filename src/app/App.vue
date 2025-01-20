@@ -18,7 +18,7 @@ watch(() => sessionStore.isAuth, () => {
   if (! isAllowBeOnThisPage) {
     router.replace({ name: 'home' });
   }
-});
+}, { immediate: true });
 </script>
 
 <template>
@@ -29,7 +29,7 @@ watch(() => sessionStore.isAuth, () => {
       @logout-click="sessionStore.logout"
     />
 
-    <v-main>
+    <v-main v-if="!sessionStore.waiting">
       <router-view></router-view>
     </v-main>
   </v-layout>

@@ -1,5 +1,6 @@
-import { AxiosError } from "axios";
 import { apiClient } from "..";
+
+import { AxiosError } from "axios";
 import { TUser } from "../../../types/user";
 import { TError } from "../../../types/api/error";
 
