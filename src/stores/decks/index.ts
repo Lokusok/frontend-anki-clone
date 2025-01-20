@@ -27,6 +27,30 @@ export const useDeckStore = defineStore('deckStore', {
             }
 
             this.waiting = false;
-        }
+        },
+
+        async getDeck(id: TDeck['id']): Promise<TDeck | null> {
+            this.waiting = true;
+
+            const deck = await decksService.getDeck(id);
+
+            this.waiting = false;
+
+            return deck;
+        },
+
+        async deleteDeck(id: TDeck['id']): Promise<boolean | null> {
+            const result = await decksService.deleteDeck(id);
+
+            if (result) {
+                const foundedIndex = this.decks.findIndex((d) => d.id === id);
+
+                if (foundedIndex !== -1) {
+                    this.decks.splice(foundedIndex, 1);
+                }
+            }
+
+            return result;
+        },
     },
 });

@@ -20,4 +20,22 @@ export const decksService = {
             return null;
         }
     },
+
+    async getDeck(id: TDeck['id']): Promise<TDeck | null> {
+        try {
+            const response = await apiClient.get(`/api/v1/decks/${id}`);
+            return response.data.data;
+        } catch {
+            return null;
+        }
+    },
+
+    async deleteDeck(id: TDeck['id']): Promise<boolean | null> {
+        try {
+            const response = await apiClient.delete(`/api/v1/decks/${id}`);
+            return response.status === 204;
+        } catch {
+            return null;
+        }
+    },
 };

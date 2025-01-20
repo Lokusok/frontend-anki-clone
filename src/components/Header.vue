@@ -18,13 +18,19 @@ const drawer = ref(false);
     </template>
 
     <template #title>
-      <router-link
-        :to="{ name: 'home' }"
-        class="text-decoration-none text-white"
-      >
-        <v-icon icon="mdi-list-box-outline" />
-        Anki
-      </router-link>
+      <v-hover>
+        <template #default="{ isHovering, props }">
+          <router-link
+            v-bind="props"
+            :to="{ name: 'home' }"
+            :style="{ 'opacity': isHovering ? '0.6' : '1' }"
+            class="text-decoration-none text-white"
+          >
+            <v-icon icon="mdi-list-box-outline" />
+            Anki
+          </router-link>
+        </template>
+      </v-hover>
     </template>
 
     <template #append>

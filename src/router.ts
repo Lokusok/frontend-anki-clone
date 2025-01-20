@@ -1,4 +1,8 @@
-import { createRouter, createWebHistory, RouteLocationNormalizedGeneric } from 'vue-router';
+import {
+  createRouter,
+  createWebHistory,
+  RouteLocationNormalizedGeneric,
+} from 'vue-router';
 
 import HomeView from './pages/home/HomeView.vue';
 import DecksList from './pages/decks-list/DecksList.vue';
@@ -8,6 +12,7 @@ import Register from './pages/register/Register.vue';
 import DecksSearch from './pages/decks-search/DecksSearch.vue';
 import Profile from './pages/profile/Profile.vue';
 import { useSessionStore } from './stores/session';
+import DecksEdit from './pages/decks-edit/DecksEdit.vue';
 
 const routes = [
   {
@@ -40,6 +45,14 @@ const routes = [
     name: 'decks.search',
     meta: {
       title: 'Поиск коллекции',
+    },
+  },
+  {
+    path: '/decks/:id/edit',
+    component: DecksEdit,
+    name: 'decks.edit',
+    meta: {
+      title: 'Изменение коллекции',
     },
   },
   {
@@ -88,7 +101,7 @@ export const accessTo = (to: RouteLocationNormalizedGeneric): boolean => {
   }
 
   // @TODO FIX IT LATER
-  if (! to.name) {
+  if (!to.name) {
     return false;
   }
 
@@ -98,7 +111,7 @@ export const accessTo = (to: RouteLocationNormalizedGeneric): boolean => {
 router.beforeEach((to, from) => {
   // if (!from.name) return true;
 
-  return accessTo(to) ;
+  return accessTo(to);
 });
 
 router.afterEach((to) => {
