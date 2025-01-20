@@ -1,11 +1,12 @@
 import { AxiosError } from "axios";
 import { apiClient } from "..";
+import { TUser } from "../../../types/user";
+import { TError } from "../../../types/api/error";
 
 export const sessionService = {
-    async registerUser(data: any): Promise<object | null> {
+    async registerUser(data: any): Promise<TError | null> {
         try {
             const response = await apiClient.post('/register', data);
-            console.log('REGISTER: ', response.data);
             return response.data;
         } catch (error) {
             if (error instanceof AxiosError && error.response) {
@@ -25,17 +26,21 @@ export const sessionService = {
         }
     },
 
-    async getUser() {
+    async getUser(): Promise<TUser | null> {
         try {
             const response = await apiClient.get('/api/user');
             return response.data;
-        } catch {}
+        } catch {
+            return null;
+        }
     },
 
-    async logout() {
+    async logout(): Promise<TUser | null> {
         try {
             const response = await apiClient.post('/logout');
             return response.data;
-        } catch {}
+        } catch {
+            return null;
+        }
     },
 };

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 
 const props = defineProps<{
   isAuth: boolean;
+  waiting: boolean;
 }>();
 
 defineEmits(['logoutClick']);
@@ -27,30 +28,58 @@ const drawer = ref(false);
     </template>
 
     <template #append>
-      <v-btn v-if="!props.isAuth" :to="{ name: 'login' }"
-        >Войти в аккаунт</v-btn
-      >
-      <v-menu>
-        <template v-slot:activator="{ props }">
-          <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
-        </template>
+      <template v-if="props.waiting">
+        <div class="px-5">
+          <v-skeleton-loader
+            width="100"
+            height="30"
+            elevation="6"
+            :style="{ opacity: 0.7 }"
+          />
+        </div>
+      </template>
 
-        <v-list>
-          <v-list-item v-if="!props.isAuth" :to="{ name: 'register' }">
-            Регистрация
-          </v-list-item>
+      <template v-if="!props.waiting">
+        <v-btn v-if="!props.isAuth" :to="{ name: 'login' }">
+          Войти в аккаунт
+        </v-btn>
 
-          <v-list-item v-if="props.isAuth" @click="$emit('logoutClick')">
-            Выйти из аккаунта
-          </v-list-item>
-        </v-list>
-      </v-menu>
+        <v-btn v-if="props.isAuth" :to="{ name: 'profile' }"> Профиль </v-btn>
+      </template>
+
+      <template v-if="props.waiting">
+        <v-skeleton-loader
+          class="rounded-circle"
+          width="40"
+          height="40"
+          elevation="6"
+          :style="{ opacity: 0.7 }"
+        />
+      </template>
+
+      <template v-if="!props.waiting">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item v-if="!props.isAuth" :to="{ name: 'register' }">
+              Регистрация
+            </v-list-item>
+
+            <v-list-item v-if="props.isAuth" @click="$emit('logoutClick')">
+              Выйти из аккаунта
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
     </template>
   </v-app-bar>
 
   <v-navigation-drawer v-model="drawer">
     <v-list>
-      <v-list-item :to="{ name: 'decks.index' }">
+      <v-list-item :disabled="!props.isAuth" :to="{ name: 'decks.index' }">
         <template #prepend>
           <v-icon icon="mdi-view-list" />
         </template>
@@ -58,7 +87,7 @@ const drawer = ref(false);
         Список коллекций
       </v-list-item>
 
-      <v-list-item :to="{ name: 'decks.create' }">
+      <v-list-item :disabled="!props.isAuth" :to="{ name: 'decks.create' }">
         <template #prepend>
           <v-icon icon="mdi-folder-plus"></v-icon>
         </template>
@@ -66,7 +95,7 @@ const drawer = ref(false);
         Создать коллекцию
       </v-list-item>
 
-      <v-list-item :to="{ name: 'decks.search' }">
+      <v-list-item :disabled="!props.isAuth" :to="{ name: 'decks.search' }">
         <template #prepend>
           <v-icon icon="mdi-text-search"></v-icon>
         </template>

@@ -9,6 +9,8 @@ import PageLayout from '../../components/layouts/PageLayout.vue';
 const sessionStore = useSessionStore();
 const router = useRouter();
 
+const waiting = ref(false);
+
 const user = ref({
   email: '',
   password: '',
@@ -26,13 +28,15 @@ const isSubmitBtnDisabled = computed(() => {
 });
 
 const loginUser = async () => {
-    const success = await sessionStore.loginUser(toValue(user));
+  waiting.value = true;
 
-    console.log({ success });
+  const success = await sessionStore.loginUser(toValue(user));
 
-    if (success) {
-        router.replace({ name: 'profile' });
-    }
+  if (success) {
+    router.replace({ name: 'profile' });
+  }
+
+  waiting.value = false;
 };
 </script>
 
@@ -42,18 +46,27 @@ const loginUser = async () => {
       <form @submit.prevent="loginUser">
         <v-text-field
           v-model="user.email"
+          :disabled="waiting"
           :error-messages="errors.email"
           label="Почта"
         />
         <v-text-field
           v-model="user.password"
+          :disabled="waiting"
           :error-messages="errors.password"
           label="Пароль"
         />
 
         <div class="d-flex justify-space-between align-center">
-          <v-btn :disabled="isSubmitBtnDisabled" type="submit" color="primary">Войти</v-btn>
-          <router-link :to="{ name: 'register' }">Нет аккуанта?</router-link>
+          <v-btn
+            :disabled="isSubmitBtnDisabled || waiting"
+            type="submit"
+            color="primary"
+          >
+            Войти
+          </v-btn>
+
+          <router-link :to="{ name: 'register' }">Нет аккаунта?</router-link>
         </div>
       </form>
     </CenterWhiteBlock>

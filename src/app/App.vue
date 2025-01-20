@@ -1,16 +1,31 @@
 <script setup lang="ts">
+import { watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 import Header from '../components/Header.vue';
 import { useSessionStore } from '../stores/session';
+import { accessTo } from '../router';
 
 const sessionStore = useSessionStore();
+const router = useRouter();
+const route = useRoute();
 
 sessionStore.startSession();
+
+watch(() => sessionStore.isAuth, () => {
+  const isAllowBeOnThisPage = accessTo(route);
+
+  if (! isAllowBeOnThisPage) {
+    router.replace({ name: 'home' });
+  }
+});
 </script>
 
 <template>
   <v-layout>
     <Header
       :is-auth="sessionStore.isAuth"
+      :waiting="sessionStore.waiting"
       @logout-click="sessionStore.logout"
     />
 
