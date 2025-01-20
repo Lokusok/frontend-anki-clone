@@ -6,6 +6,7 @@ import DecksCreate from './pages/decks-create/DecksCreate.vue';
 import Login from './pages/login/Login.vue';
 import Register from './pages/register/Register.vue';
 import DecksSearch from './pages/decks-search/DecksSearch.vue';
+import Profile from './pages/profile/Profile.vue';
 
 const routes = [
     {
@@ -37,6 +38,11 @@ const routes = [
         path: '/register',
         component: Register,
         name: 'register',
+    },
+    {
+        path: '/profile',
+        component: Profile,
+        name: 'profile',
     },
 ];
 

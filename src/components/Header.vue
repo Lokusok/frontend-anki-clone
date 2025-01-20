@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
+
+const props = defineProps<{
+  isAuth: boolean;
+}>();
+
+defineEmits(['logoutClick']);
 
 const drawer = ref(false);
-
-watch(drawer, () => {
-    document.body.style.overflowY = 'hidden';
-});
 </script>
 
 <template>
@@ -15,24 +17,30 @@ watch(drawer, () => {
     </template>
 
     <template #title>
-      <router-link :to="{ name: 'home' }" class="text-decoration-none text-white">
+      <router-link
+        :to="{ name: 'home' }"
+        class="text-decoration-none text-white"
+      >
         <v-icon icon="mdi-list-box-outline" />
         Anki
       </router-link>
     </template>
 
     <template #append>
-      <v-btn :to="{ name: 'login' }">Войти в аккаунт</v-btn>
+      <v-btn v-if="!props.isAuth" :to="{ name: 'login' }"
+        >Войти в аккаунт</v-btn
+      >
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
         </template>
 
         <v-list>
-          <v-list-item :to="{ name: 'register' }">
+          <v-list-item v-if="!props.isAuth" :to="{ name: 'register' }">
             Регистрация
           </v-list-item>
-          <v-list-item>
+
+          <v-list-item v-if="props.isAuth" @click="$emit('logoutClick')">
             Выйти из аккаунта
           </v-list-item>
         </v-list>

@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import Header from '../components/Header.vue';
+import { useSessionStore } from '../stores/session';
+
+const sessionStore = useSessionStore();
+
+sessionStore.startSession();
 </script>
 
 <template>
   <v-layout>
-    <Header />
+    <Header
+      :is-auth="sessionStore.isAuth"
+      @logout-click="sessionStore.logout"
+    />
 
     <v-main>
       <router-view></router-view>
