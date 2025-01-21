@@ -4,3 +4,8 @@ export type TQuestionInput = {
     back: string;
     tags: string[];
 };
+
+export type TQuestionsGetInput = {
+    deckId: number | string;
+    askReady?: boolean;
+};

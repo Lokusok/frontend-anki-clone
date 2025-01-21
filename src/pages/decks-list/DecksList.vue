@@ -65,6 +65,8 @@ const deleteDeck = async () => {
             <td class="d-flex justify-center">
               <div class="d-flex ga-2 py-2">
                 <v-btn
+                  :disabled="deck.ask_ready === 0"
+                  :to="{ name: 'questions.answer', params: { deckId: deck.id } }"
                   color="primary"
                   icon="mdi-eye-circle-outline"
                   size="x-small"

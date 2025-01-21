@@ -12,7 +12,7 @@ const route = useRoute();
 
 sessionStore.startSession();
 
-watch([sessionStore.isAuth, sessionStore.init], () => {
+watch([() => sessionStore.isAuth, () => sessionStore.init], () => {
   if (sessionStore.init) {
     const isAllowBeOnThisPage = accessTo(route);
   

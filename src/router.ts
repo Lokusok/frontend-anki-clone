@@ -4,6 +4,8 @@ import {
   RouteLocationNormalizedGeneric,
 } from 'vue-router';
 
+import { useSessionStore } from './stores/session';
+
 import HomeView from './pages/home/HomeView.vue';
 import DecksList from './pages/decks-list/DecksList.vue';
 import DecksCreate from './pages/decks-create/DecksCreate.vue';
@@ -11,9 +13,9 @@ import Login from './pages/login/Login.vue';
 import Register from './pages/register/Register.vue';
 import DecksSearch from './pages/decks-search/DecksSearch.vue';
 import Profile from './pages/profile/Profile.vue';
-import { useSessionStore } from './stores/session';
 import DecksEdit from './pages/decks-edit/DecksEdit.vue';
 import QuestionsCreate from './pages/questions-create/QuestionsCreate.vue';
+import QuestionsAnswer from './pages/questions-answer/QuestionsAnswer.vue';
 
 const routes = [
   {
@@ -65,6 +67,14 @@ const routes = [
     },
   },
   {
+    path: '/decks/:deckId/questions/answer',
+    component: QuestionsAnswer,
+    name: 'questions.answer',
+    meta: {
+      title: 'Ответы на вопросы',
+    },
+  },
+  {
     path: '/login',
     component: Login,
     name: 'login',
@@ -96,7 +106,7 @@ const router = createRouter({
 });
 
 const onlyGuests = ['login', 'register'];
-const onlyAuth = ['decks.index', 'decks.create', 'decks.search', 'questions.create', 'profile'];
+const onlyAuth = ['decks.index', 'decks.create', 'decks.search', 'questions.create', 'questions.answer', 'profile'];
 
 export const accessTo = (to: RouteLocationNormalizedGeneric): boolean => {
   const sessionStore = useSessionStore();

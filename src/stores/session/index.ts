@@ -22,12 +22,14 @@ export const useSessionStore = defineStore('sessionStore', {
     async registerUser(data: TUserInputRegister) {
       const response = await sessionService.registerUser(data);
 
-      if (response && !response.errors) {
+      if (!response?.errors) {
         const user = await sessionService.getUser();
 
         if (user) {
           this.session.name = user.name;
           this.session.email = user.email;
+        } else {
+          this.logout();
         }
 
         return;
