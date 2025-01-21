@@ -12,11 +12,13 @@ const route = useRoute();
 
 sessionStore.startSession();
 
-watch(() => sessionStore.isAuth, () => {
-  const isAllowBeOnThisPage = accessTo(route);
-
-  if (! isAllowBeOnThisPage) {
-    router.replace({ name: 'home' });
+watch([sessionStore.isAuth, sessionStore.init], () => {
+  if (sessionStore.init) {
+    const isAllowBeOnThisPage = accessTo(route);
+  
+    if (! isAllowBeOnThisPage) {
+      router.replace({ name: 'home' });
+    }
   }
 }, { immediate: true });
 </script>

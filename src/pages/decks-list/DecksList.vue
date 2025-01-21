@@ -99,7 +99,15 @@ const deleteDeck = async () => {
       <v-card-title class="d-flex justify-space-between">
         <div class="text-h5 ma-2">Подтвердите удаление</div>
 
-        <v-btn :disabled="waitDelete" icon="mdi-close" variant="text" @click="resetDeleteDialog" />
+        <v-btn
+          :disabled="waitDelete"
+          icon="mdi-close"
+          variant="text"
+          @click="resetDeleteDialog"
+          :style="{
+            display: $vuetify.display.width < 430 ? 'none' : 'initial',
+          }"
+        />
       </v-card-title>
       <v-card-text>
         Удалённая коллекция не подлежит восстановлению

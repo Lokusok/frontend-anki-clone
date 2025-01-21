@@ -2,8 +2,11 @@ import { defineStore } from 'pinia';
 import { sessionService } from '../../services/api/session';
 import { TUserInputLogin, TUserInputRegister } from '../../types/input/user';
 
+const AUTH_KEY = 'SESSION';
+
 export const useSessionStore = defineStore('sessionStore', {
   state: () => ({
+    init: Boolean(localStorage.getItem(AUTH_KEY)),
     waiting: true,
     session: {
       name: '',
@@ -12,7 +15,7 @@ export const useSessionStore = defineStore('sessionStore', {
   }),
 
   getters: {
-    isAuth: (state) => Boolean(state.session.name),
+    isAuth: (state) => state.init || Boolean(state.session.name),
   },
 
   actions: {
@@ -42,6 +45,8 @@ export const useSessionStore = defineStore('sessionStore', {
         if (user) {
           this.session.name = user.name;
           this.session.email = user.email;
+        } else {
+          this.logout();
         }
 
         return;
@@ -56,8 +61,11 @@ export const useSessionStore = defineStore('sessionStore', {
       const user = await sessionService.getUser();
 
       if (user) {
+        this.init = true;
         this.session.name = user.name;
         this.session.email = user.email;
+      } else {
+        this.logout();
       }
 
       this.waiting = false;
@@ -66,6 +74,8 @@ export const useSessionStore = defineStore('sessionStore', {
     logout() {
       sessionService.logout();
 
+      localStorage.removeItem(AUTH_KEY);
+      this.init = false;
       this.session.name = '';
       this.session.email = '';
     },

@@ -109,17 +109,10 @@ export const accessTo = (to: RouteLocationNormalizedGeneric): boolean => {
     return false;
   }
 
-  // @TODO FIX IT LATER
-  if (!to.name) {
-    return false;
-  }
-
   return true;
 };
 
-router.beforeEach((to, from) => {
-  // if (!from.name) return true;
-
+router.beforeEach((to) => {
   return accessTo(to);
 });
 
