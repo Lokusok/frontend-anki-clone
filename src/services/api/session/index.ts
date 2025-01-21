@@ -3,9 +3,10 @@ import { apiClient } from "..";
 import { AxiosError } from "axios";
 import { TUser } from "../../../types/user";
 import { TError } from "../../../types/api/error";
+import { TUserInputRegister, TUserInputLogin } from "../../../types/input/user";
 
 export const sessionService = {
-    async registerUser(data: any): Promise<TError | null> {
+    async registerUser(data: TUserInputRegister): Promise<TError | null> {
         try {
             const response = await apiClient.post('/register', data);
             return response.data;
@@ -18,7 +19,7 @@ export const sessionService = {
         }
     },
 
-    async loginUser(data: any): Promise<TError | null> {
+    async loginUser(data: TUserInputLogin): Promise<TError | null> {
         try {
             await apiClient.post('/login', data);
             return null;

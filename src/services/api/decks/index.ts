@@ -1,11 +1,11 @@
 import { apiClient } from '..';
 import { TDeck } from '../../../types/deck';
+import { TDeckInput } from '../../../types/input/deck';
 
 export const decksService = {
-    async createDeck(data: any): Promise<TDeck | null> {
+    async createDeck(data: TDeckInput): Promise<TDeck | null> {
         try {
             const response = await apiClient.post('/api/v1/decks', data);
-            console.log(response, '<<<');
             return response.data;
         } catch {
             return null;

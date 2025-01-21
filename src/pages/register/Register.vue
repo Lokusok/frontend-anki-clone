@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, toValue } from 'vue';
+import { ref, toValue } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useSessionStore } from '../../stores/session';
+import { useFormState } from '../../composables/use-form-state';
 
 import PageLayout from '../../components/layouts/PageLayout.vue';
 import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
@@ -11,29 +12,13 @@ const sessionStore = useSessionStore();
 const router = useRouter();
 
 const waiting = ref(false);
+const isShowPasswords = ref(false);
 
-const user = ref({
+const { data: user, errors, isSubmitDisabled } = useFormState({
   name: '',
   email: '',
   password: '',
   password_confirmation: '',
-});
-
-const errors = ref({
-  message: '',
-  name: '',
-  email: '',
-  password: '',
-  password_confirmation: '',
-});
-
-const isSubmitBtnDisabled = computed(() => {
-  const isNotAllFilled =
-    !user.value.name ||
-    !user.value.email ||
-    !user.value.password ||
-    !user.value.password_confirmation;
-  return isNotAllFilled;
 });
 
 const registerUser = async () => {
@@ -85,18 +70,22 @@ const registerUser = async () => {
           v-model="user.password"
           :disabled="waiting"
           :error-messages="errors.password"
+          :type="isShowPasswords ? 'text' : 'password'"
+          :append-icon="isShowPasswords ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append="isShowPasswords = !isShowPasswords"
           label="Пароль"
         />
         <v-text-field
           v-model="user.password_confirmation"
           :disabled="waiting"
           :error-messages="errors.password_confirmation"
+          :type="isShowPasswords ? 'text' : 'password'"
           label="Подтвердите пароль"
         />
 
         <div class="d-flex justify-space-between align-center">
           <v-btn
-            :disabled="isSubmitBtnDisabled || waiting"
+            :disabled="isSubmitDisabled || waiting"
             type="submit"
             color="primary"
           >

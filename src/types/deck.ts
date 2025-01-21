@@ -1,5 +1,5 @@
 export type TDeck = {
-    id: number;
+    id: number | string;
     title: string;
     created_at: string;
     user_id: number;

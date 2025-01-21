@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { sessionService } from '../../services/api/session';
+import { TUserInputLogin, TUserInputRegister } from '../../types/input/user';
 
 export const useSessionStore = defineStore('sessionStore', {
   state: () => ({
@@ -15,7 +16,7 @@ export const useSessionStore = defineStore('sessionStore', {
   },
 
   actions: {
-    async registerUser(data: any) {
+    async registerUser(data: TUserInputRegister) {
       const response = await sessionService.registerUser(data);
 
       if (response && !response.errors) {
@@ -32,7 +33,7 @@ export const useSessionStore = defineStore('sessionStore', {
       return response;
     },
 
-    async loginUser(data: any) {
+    async loginUser(data: TUserInputLogin) {
       const response = await sessionService.loginUser(data);
 
       if (!response?.errors) {

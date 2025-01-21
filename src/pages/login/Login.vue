@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, toValue } from 'vue';
+import { ref, toValue } from 'vue';
 import { useRouter } from 'vue-router';
 
+import { useFormState } from '../../composables/use-form-state';
 import { useSessionStore } from '../../stores/session';
 import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
 import PageLayout from '../../components/layouts/PageLayout.vue';
@@ -10,22 +11,15 @@ const sessionStore = useSessionStore();
 const router = useRouter();
 
 const waiting = ref(false);
+const isShowPasswords = ref(false);
 
-const user = ref({
+const {
+  data: user,
+  errors,
+  isSubmitDisabled,
+} = useFormState({
   email: '',
   password: '',
-});
-
-const errors = ref({
-  message: '',
-  email: '',
-  password: '',
-});
-
-const isSubmitBtnDisabled = computed(() => {
-  const isNotAllFilled = !user.value.email || !user.value.password;
-
-  return isNotAllFilled;
 });
 
 const loginUser = async () => {
@@ -50,11 +44,28 @@ const loginUser = async () => {
   <PageLayout title="Войти в аккаунт">
     <CenterWhiteBlock>
       <form @submit.prevent="loginUser">
-        <v-text-field v-model="user.email" :disabled="waiting" :error-messages="errors.email" label="Почта" />
-        <v-text-field v-model="user.password" :disabled="waiting" :error-messages="errors.password" label="Пароль" />
+        <v-text-field
+          v-model="user.email"
+          :disabled="waiting"
+          :error-messages="errors.email"
+          label="Почта"
+        />
+        <v-text-field
+          v-model="user.password"
+          :disabled="waiting"
+          :error-messages="errors.password"
+          :type="isShowPasswords ? 'text' : 'password'"
+          :append-icon="isShowPasswords ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append="isShowPasswords = !isShowPasswords"
+          label="Пароль"
+        />
 
         <div class="d-flex justify-space-between align-center">
-          <v-btn :disabled="isSubmitBtnDisabled || waiting" type="submit" color="primary">
+          <v-btn
+            :disabled="isSubmitDisabled || waiting"
+            type="submit"
+            color="primary"
+          >
             Войти
           </v-btn>
 
