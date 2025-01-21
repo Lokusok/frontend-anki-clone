@@ -17,6 +17,7 @@ const user = ref({
 });
 
 const errors = ref({
+  message: '',
   email: '',
   password: '',
 });
@@ -30,9 +31,14 @@ const isSubmitBtnDisabled = computed(() => {
 const loginUser = async () => {
   waiting.value = true;
 
-  const success = await sessionStore.loginUser(toValue(user));
+  const loginErrors = await sessionStore.loginUser(toValue(user));
 
-  if (success) {
+  if (loginErrors) {
+    errors.value.message = loginErrors.message;
+
+    errors.value.email = loginErrors.errors.email?.[0];
+    errors.value.password = loginErrors.errors.password?.[0];
+  } else {
     router.replace({ name: 'profile' });
   }
 
@@ -44,25 +50,11 @@ const loginUser = async () => {
   <PageLayout title="Войти в аккаунт">
     <CenterWhiteBlock>
       <form @submit.prevent="loginUser">
-        <v-text-field
-          v-model="user.email"
-          :disabled="waiting"
-          :error-messages="errors.email"
-          label="Почта"
-        />
-        <v-text-field
-          v-model="user.password"
-          :disabled="waiting"
-          :error-messages="errors.password"
-          label="Пароль"
-        />
+        <v-text-field v-model="user.email" :disabled="waiting" :error-messages="errors.email" label="Почта" />
+        <v-text-field v-model="user.password" :disabled="waiting" :error-messages="errors.password" label="Пароль" />
 
         <div class="d-flex justify-space-between align-center">
-          <v-btn
-            :disabled="isSubmitBtnDisabled || waiting"
-            type="submit"
-            color="primary"
-          >
+          <v-btn :disabled="isSubmitBtnDisabled || waiting" type="submit" color="primary">
             Войти
           </v-btn>
 

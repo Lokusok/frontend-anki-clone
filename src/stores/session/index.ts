@@ -35,7 +35,7 @@ export const useSessionStore = defineStore('sessionStore', {
     async loginUser(data: any) {
       const response = await sessionService.loginUser(data);
 
-      if (response) {
+      if (!response?.errors) {
         const user = await sessionService.getUser();
 
         if (user) {
@@ -43,8 +43,10 @@ export const useSessionStore = defineStore('sessionStore', {
           this.session.email = user.email;
         }
 
-        return true;
+        return;
       }
+
+      return response;
     },
 
     async startSession() {

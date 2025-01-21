@@ -46,11 +46,11 @@ const registerUser = async () => {
   if (registerErrors) {
     errors.value.message = registerErrors.message;
 
-    errors.value.name = registerErrors.errors.name[0];
-    errors.value.email = registerErrors.errors.email[0];
-    errors.value.password = registerErrors.errors.password[0];
+    errors.value.name = registerErrors.errors.name?.[0];
+    errors.value.email = registerErrors.errors.email?.[0];
+    errors.value.password = registerErrors.errors.password?.[0];
     errors.value.password_confirmation =
-      registerErrors.errors.password_confirmation[0];
+      registerErrors.errors.password_confirmation?.[0];
 
     user.value.password = '';
     user.value.password_confirmation = '';

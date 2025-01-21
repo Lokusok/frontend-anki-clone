@@ -18,11 +18,15 @@ export const sessionService = {
         }
     },
 
-    async loginUser(data: any): Promise<boolean | null> {
+    async loginUser(data: any): Promise<TError | null> {
         try {
-            const response = await apiClient.post('/login', data);
-            return response.status === 204;
+            await apiClient.post('/login', data);
+            return null;
         } catch (error) {
+            if (error instanceof AxiosError && error.response) {
+                return error.response.data;
+            }
+
             return null;
         }
     },
