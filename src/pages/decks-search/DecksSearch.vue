@@ -1,13 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+
 import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
 import PageLayout from '../../components/layouts/PageLayout.vue';
+
 import { useDeckStore } from '../../stores/decks';
 import { useTagsStore } from '../../stores/tags';
 import { useFormState } from '../../composables/use-form-state';
-import { computed } from 'vue';
 
 const decksStore = useDeckStore();
 const tagsStore = useTagsStore();
+const router = useRouter();
 
 decksStore.getAllDecks();
 tagsStore.getAllTags();
@@ -19,12 +23,30 @@ const { data: searchData } = useFormState({
 });
 
 const isSubmitDisabled = computed(() => {
-  return !searchData.value.deckId && !searchData.value.tagId && !searchData.value.query;
+  return (
+    !searchData.value.deckId &&
+    !searchData.value.tagId &&
+    !searchData.value.query
+  );
 });
 
 const callbacks = {
   search: () => {
-    console.log('search method');
+    // Когда пользователь хочет искать только по коллекции
+    if (
+      searchData.value.deckId &&
+      !searchData.value.tagId &&
+      !searchData.value.query
+    ) {
+      router.push({
+        name: 'decks.index',
+        query: {
+          deck_id: searchData.value.deckId,
+        },
+      });
+    } else {
+      console.log('FULL SEARCH');
+    }
   },
 };
 </script>
@@ -59,12 +81,9 @@ const callbacks = {
           label="Содержимое"
         ></v-text-field>
 
-        <v-btn
-          :disabled="isSubmitDisabled"
-          color="primary"
-          type="submit"
-          >Поиск</v-btn
-        >
+        <v-btn :disabled="isSubmitDisabled" color="primary" type="submit">
+          Поиск
+        </v-btn>
       </form>
     </CenterWhiteBlock>
   </PageLayout>

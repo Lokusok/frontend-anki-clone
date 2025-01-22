@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { decksService } from '../../services/api/decks';
 import { TDeck } from '../../types/deck';
-import { TDeckInput } from '../../types/input/deck';
+import { TDeckInput, TDeckSearchInput } from '../../types/input/deck';
 
 export const useDeckStore = defineStore('deckStore', {
   state: () => ({
@@ -17,10 +17,16 @@ export const useDeckStore = defineStore('deckStore', {
       }
     },
 
-    async getAllDecks() {
+    async getAllDecks(data?: TDeckSearchInput) {
       this.waiting = true;
 
-      const decks = await decksService.getAllDecks();
+      let decks = null;
+
+      if (data) {
+        decks = await decksService.searchBy(data);
+      } else {
+        decks = await decksService.getAllDecks();
+      }
 
       if (decks) {
         this.decks = decks;

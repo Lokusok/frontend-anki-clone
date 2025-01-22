@@ -1,12 +1,27 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
-import PageLayout from '../../components/layouts/PageLayout.vue';
+import { onMounted, ref, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
+
 import { useDeckStore } from '../../stores/decks';
 import { TDeck } from '../../types/deck';
 
+import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
+import PageLayout from '../../components/layouts/PageLayout.vue';
+import QuestionsTable from '../../components/QuestionsTable.vue';
+import router from '../../router';
+import { TDeckSearchInput } from '../../types/input/deck';
+
 const decksStore = useDeckStore();
-decksStore.getAllDecks();
+const route = useRoute();
+
+watchEffect(() => {
+  if (route.query.deck_id) decksStore.getAllDecks(route.query as unknown as TDeckSearchInput);
+  else decksStore.getAllDecks();
+});
+
+onMounted(() => {
+  console.log(route.query, '<<<');
+});
 
 const waitDelete = ref(false);
 
@@ -36,10 +51,27 @@ const deleteDeck = async () => {
 
   resetDeleteDialog();
 };
+
+const callbacks = {
+  resetFilters: () => {
+    router.replace({ query: {} });
+  },
+};
 </script>
 
 <template>
   <PageLayout title="Список коллекций">
+
+    <div class="d-flex justify-center mb-4">
+      <v-btn color="primary" @click="callbacks.resetFilters">
+        <template #prepend>
+          <v-icon icon="mdi-trash-can"></v-icon>
+        </template>
+
+        Сбросить фильтры
+      </v-btn>
+    </div>
+
     <CenterWhiteBlock :style="{ 'min-height': '300px' }">
       <div
         v-if="decksStore.waiting"
@@ -48,51 +80,11 @@ const deleteDeck = async () => {
         <v-progress-circular :size="50" color="primary" indeterminate />
       </div>
 
-      <v-table v-else fixed-header>
-        <thead>
-          <tr>
-            <th class="text-center font-weight-bold">Название</th>
-            <th class="text-center font-weight-bold">Пора/Не пора</th>
-            <th class="text-center font-weight-bold">Действия</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="deck in decksStore.decks" :key="deck.title">
-            <td class="text-center">{{ deck.title }}</td>
-            <td class="text-center">
-              {{ `${deck.ask_ready}/${deck.ask_later}` }}
-            </td>
-            <td class="d-flex justify-center">
-              <div class="d-flex ga-2 py-2">
-                <v-btn
-                  :disabled="deck.ask_ready === 0"
-                  :to="{ name: 'questions.answer', params: { deckId: deck.id } }"
-                  color="primary"
-                  icon="mdi-eye-circle-outline"
-                  size="x-small"
-                ></v-btn>
-                <v-btn
-                  color="secondary"
-                  icon="mdi-pen"
-                  size="x-small"
-                  @click="
-                    $router.push({
-                      name: 'decks.edit',
-                      params: { id: deck.id },
-                    })
-                  "
-                ></v-btn>
-                <v-btn
-                  color="red"
-                  icon="mdi-trash-can"
-                  size="x-small"
-                  @click="activateDeleteDialog(deck.id)"
-                ></v-btn>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
+      <QuestionsTable
+        v-else
+        :decks="decksStore.decks"
+        @delete="activateDeleteDialog"
+      />
     </CenterWhiteBlock>
   </PageLayout>
 

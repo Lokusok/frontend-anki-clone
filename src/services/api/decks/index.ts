@@ -1,6 +1,6 @@
 import { apiClient } from '..';
 import { TDeck } from '../../../types/deck';
-import { TDeckInput } from '../../../types/input/deck';
+import { TDeckInput, TDeckSearchInput } from '../../../types/input/deck';
 
 export const decksService = {
     async createDeck(data: TDeckInput): Promise<TDeck | null> {
@@ -38,4 +38,17 @@ export const decksService = {
             return null;
         }
     },
+
+    async searchBy(data: TDeckSearchInput): Promise<TDeck[] | null> {
+        try {
+            const response = await apiClient.get(`/api/v1/decks/search`, {
+                params: {
+                    deck_id: data.deck_id.toString(),
+                },
+            });
+            return response.data.data;
+        } catch {
+            return null;
+        }
+    }
 };
