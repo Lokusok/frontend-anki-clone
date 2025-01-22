@@ -55,31 +55,39 @@ const callbacks = {
   <PageLayout title="Поиск коллекций">
     <CenterWhiteBlock>
       <form @submit.prevent="callbacks.search">
-        <v-select
-          v-model="searchData.deckId"
-          label="Коллекция"
-          :items="decksStore.decks"
-          :loading="decksStore.waiting"
-          :disabled="decksStore.waiting"
-          item-title="title"
-          item-value="id"
-          multiple
-          persistent-hint
-        ></v-select>
-        <v-select
-          v-model="searchData.tagId"
-          :items="tagsStore.tags"
-          :loading="tagsStore.waiting"
-          :disabled="tagsStore.waiting"
-          multiple
-          item-title="title"
-          item-value="title"
-          label="Тег"
-        ></v-select>
-        <v-text-field
-          v-model="searchData.query"
-          label="Содержимое"
-        ></v-text-field>
+        <div class="d-flex flex-column">
+          <v-select
+            v-model="searchData.deckId"
+            label="Коллекция"
+            :items="decksStore.decks"
+            :loading="decksStore.waiting"
+            :disabled="decksStore.waiting"
+            hint="Выбор только этого поля приведёт к поиску по коллекциям"
+            item-title="title"
+            item-value="id"
+            multiple
+            persistent-hint
+            class="mb-4"
+          ></v-select>
+
+          <v-select
+            v-model="searchData.tagId"
+            :items="tagsStore.tags"
+            :loading="tagsStore.waiting"
+            :disabled="tagsStore.waiting"
+            multiple
+            item-title="title"
+            item-value="title"
+            label="Тег"
+          ></v-select>
+
+          <v-text-field
+            v-model="searchData.query"
+            label="Содержимое"
+          ></v-text-field>
+        </div>
+
+        <v-divider class="ma-3"></v-divider>
 
         <v-btn :disabled="isSubmitDisabled" color="primary" type="submit">
           Поиск

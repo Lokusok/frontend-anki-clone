@@ -5,11 +5,13 @@ defineProps<{
 </script>
 
 <template>
-<div class="py-5">
-    <h1 class="text-h4 text-center">{{ $props.title }}</h1>
+  <div class="py-5">
+    <div class="py-5">
+      <h1 class="text-h4 text-center">{{ $props.title }}</h1>
+    </div>
+  
+    <v-divider class="pb-5" />
+  
+    <slot></slot>
   </div>
-
-  <v-divider class="pb-5" />
-
-  <slot></slot>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watchEffect } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useDeckStore } from '../../stores/decks';
@@ -7,16 +7,20 @@ import { TDeck } from '../../types/deck';
 
 import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
 import PageLayout from '../../components/layouts/PageLayout.vue';
-import QuestionsTable from '../../components/QuestionsTable.vue';
+import DecksTable from '../../components/DecksTable.vue';
 import router from '../../router';
 import { TDeckSearchInput } from '../../types/input/deck';
 
 const decksStore = useDeckStore();
 const route = useRoute();
 
+const hasFilters = computed(() => {
+  return route.query.deck_id;
+});
+
 watchEffect(() => {
   console.log(route.query);
-  if (route.query.deck_id) decksStore.getAllDecks(route.query as unknown as TDeckSearchInput);
+  if (hasFilters.value) decksStore.getAllDecks(route.query as unknown as TDeckSearchInput);
   else decksStore.getAllDecks();
 });
 
@@ -63,7 +67,7 @@ const callbacks = {
 <template>
   <PageLayout title="Список коллекций">
 
-    <div class="d-flex justify-center mb-4">
+    <div v-if="hasFilters" class="d-flex justify-center mb-4">
       <v-btn color="primary" @click="callbacks.resetFilters">
         <template #prepend>
           <v-icon icon="mdi-trash-can"></v-icon>
@@ -81,7 +85,7 @@ const callbacks = {
         <v-progress-circular :size="50" color="primary" indeterminate />
       </div>
 
-      <QuestionsTable
+      <DecksTable
         v-else
         :decks="decksStore.decks"
         @delete="activateDeleteDialog"

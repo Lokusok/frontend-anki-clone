@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import { computed, ref, toValue } from 'vue';
+import { computed, onUnmounted, ref, toValue } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useDeckStore } from '../../stores/decks';
 import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
 import PageLayout from '../../components/layouts/PageLayout.vue';
+import QuestionsTable from '../../components/QuestionsTable.vue';
+import { useQuestionsStore } from '../../stores/questions';
 
 const route = useRoute();
+
 const decksStore = useDeckStore();
+const questionsStore = useQuestionsStore();
+
+questionsStore.getQuestions({ deckId: Number(route.params.id) });
+
+onUnmounted(() => questionsStore.resetState());
 
 const waiting = ref(false);
 const successSnack = ref(false);
@@ -16,10 +24,9 @@ const deck = ref({
   title: '',
 });
 
-decksStore.getDeck(Number(route.params.id))
-    .then((fetchedDeck) => {
-        deck.value.title = fetchedDeck.title;
-    });
+decksStore.getDeck(Number(route.params.id)).then((fetchedDeck) => {
+  deck.value.title = fetchedDeck.title;
+});
 
 const isSubmitBtnDisabled = computed(() => {
   return !deck.value.title;
@@ -40,7 +47,6 @@ const createDeck = async () => {
 
 <template>
   <PageLayout title="Изменить коллекцию">
-    
     <CenterWhiteBlock :style="{ 'min-height': '200px' }">
       <v-btn :to="{ name: 'decks.index' }" color="primary">
         <template #prepend>
@@ -71,6 +77,23 @@ const createDeck = async () => {
           >Создать</v-btn
         >
       </form>
+    </CenterWhiteBlock>
+
+    <v-divider class="ma-5"></v-divider>
+
+    <CenterWhiteBlock>
+      <div
+        v-if="decksStore.waiting || questionsStore.waiting"
+        class="d-flex justify-center align-center h-100"
+      >
+        <v-progress-circular :size="50" color="primary" indeterminate />
+      </div>
+
+      <template v-else>
+        <div class="text-center text-h5 font-weight-bold">Вопросы</div>
+  
+        <QuestionsTable :questions="questionsStore.questions" />
+      </template>
     </CenterWhiteBlock>
   </PageLayout>
 
