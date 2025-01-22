@@ -6,17 +6,17 @@ import {
 
 import { useSessionStore } from './stores/session';
 
-import HomeView from './pages/home/HomeView.vue';
-import DecksIndex from './pages/decks/index/DecksIndex.vue';
-import DecksCreate from './pages/decks/create/DecksCreate.vue';
-import DecksSearch from './pages/decks/search/DecksSearch.vue';
-import DecksEdit from './pages/decks/edit/DecksEdit.vue';
-import QuestionsCreate from './pages/questions/create/QuestionsCreate.vue';
-import QuestionsEdit from './pages/questions/edit/QuestionsEdit.vue';
-import QuestionsAnswer from './pages/questions/answer/QuestionsAnswer.vue';
-import Login from './pages/session/login/Login.vue';
-import Register from './pages/session/register/Register.vue';
-import Profile from './pages/session/profile/Profile.vue';
+import HomeView from './modules/home/HomeView.vue';
+import DecksIndex from './modules/decks/index/DecksIndex.vue';
+import DecksCreate from './modules/decks/create/DecksCreate.vue';
+import DecksSearch from './modules/decks/search/DecksSearch.vue';
+import DecksEdit from './modules/decks/edit/DecksEdit.vue';
+import QuestionsCreate from './modules/questions/create/QuestionsCreate.vue';
+import QuestionsEdit from './modules/questions/edit/QuestionsEdit.vue';
+import QuestionsAnswer from './modules/questions/answer/QuestionsAnswer.vue';
+import Login from './modules/session/login/Login.vue';
+import Register from './modules/session/register/Register.vue';
+import Profile from './modules/session/profile/Profile.vue';
 
 const routes = [
   {
