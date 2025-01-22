@@ -17,15 +17,15 @@ decksStore.getAllDecks();
 tagsStore.getAllTags();
 
 const { data: searchData } = useFormState({
-  deckId: null,
-  tagId: null,
+  deckId: [],
+  tagId: [],
   query: '',
 });
 
 const isSubmitDisabled = computed(() => {
   return (
-    !searchData.value.deckId &&
-    !searchData.value.tagId &&
+    !searchData.value.deckId.length &&
+    !searchData.value.tagId.length &&
     !searchData.value.query
   );
 });
@@ -34,14 +34,14 @@ const callbacks = {
   search: () => {
     // Когда пользователь хочет искать только по коллекции
     if (
-      searchData.value.deckId &&
-      !searchData.value.tagId &&
+      searchData.value.deckId.length &&
+      !searchData.value.tagId.length &&
       !searchData.value.query
     ) {
       router.push({
         name: 'decks.index',
         query: {
-          deck_id: searchData.value.deckId,
+          deck_id: searchData.value.deckId.toString(),
         },
       });
     } else {

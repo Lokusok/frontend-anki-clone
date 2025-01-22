@@ -15,6 +15,7 @@ const decksStore = useDeckStore();
 const route = useRoute();
 
 watchEffect(() => {
+  console.log(route.query);
   if (route.query.deck_id) decksStore.getAllDecks(route.query as unknown as TDeckSearchInput);
   else decksStore.getAllDecks();
 });

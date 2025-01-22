@@ -3,5 +3,5 @@ export type TDeckInput = {
 }
 
 export type TDeckSearchInput = {
-    deck_id: string[] | number[];
+    deck_id: string[];
 };
