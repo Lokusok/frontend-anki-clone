@@ -136,7 +136,7 @@ router.beforeEach((to) => {
 });
 
 router.afterEach((to) => {
-  document.title = to.meta?.title ?? 'Вопросы и ответы';
+  document.title = to.meta?.title as string ?? 'Вопросы и ответы';
 });
 
 export default router;

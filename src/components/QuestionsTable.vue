@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { TDeck } from '../types/deck';
 import { TQuestion } from '../types/question';
 
 defineProps<{
-  deckId: TDeck['id'];
   questions: TQuestion[];
 }>();
 
@@ -39,7 +37,7 @@ defineEmits<{
               size="x-small"
               :to="{
                 name: 'questions.edit',
-                params: { deckId: $props.deckId, questionId: question.id },
+                params: { deckId: question.deck_id, questionId: question.id },
               }"
             ></v-btn>
 

@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router';
 import { useFormState } from '@/composables/use-form-state';
 import { useDeckStore } from '@/stores/decks';
 import { useTagsStore } from '@/stores/tags';
+import { useQuestionsStore } from '@/stores/questions';
 
 import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
 import PageLayout from '@/components/layouts/PageLayout.vue';
@@ -13,12 +14,15 @@ import ContainerQuestionsTable from '../containers/ContainerQuestionsTable.vue';
 
 const decksStore = useDeckStore();
 const tagsStore = useTagsStore();
+const questionsStore = useQuestionsStore();
+
 const router = useRouter();
 
 decksStore.getAllDecks();
 tagsStore.getAllTags();
 
 const isFullSearch = ref(false);
+const waitingSearch = ref(false);
 
 const { data: searchData } = useFormState({
   deckId: [],
@@ -35,7 +39,7 @@ const isSubmitDisabled = computed(() => {
 });
 
 const callbacks = {
-  search: () => {
+  search: async () => {
     // Когда пользователь хочет искать только по коллекции
     if (
       searchData.value.deckId.length &&
@@ -49,6 +53,16 @@ const callbacks = {
         },
       });
     } else {
+      waitingSearch.value = true;
+
+      await questionsStore.searchQuestions({
+        deckId: searchData.value.deckId,
+        tags: searchData.value.tagId,
+        query: searchData.value.query,
+      });
+
+      waitingSearch.value = false;
+
       isFullSearch.value = true;
     }
   },
@@ -64,8 +78,8 @@ const callbacks = {
             v-model="searchData.deckId"
             label="Коллекция"
             :items="decksStore.decks"
-            :loading="decksStore.waiting"
-            :disabled="decksStore.waiting"
+            :loading="decksStore.waiting || waitingSearch"
+            :disabled="decksStore.waiting || waitingSearch"
             hint="Выбор только этого поля приведёт к поиску по коллекциям"
             item-title="title"
             item-value="id"
@@ -77,8 +91,8 @@ const callbacks = {
           <v-select
             v-model="searchData.tagId"
             :items="tagsStore.tags"
-            :loading="tagsStore.waiting"
-            :disabled="tagsStore.waiting"
+            :loading="tagsStore.waiting || waitingSearch"
+            :disabled="tagsStore.waiting || waitingSearch"
             multiple
             item-title="title"
             item-value="title"
@@ -93,7 +107,7 @@ const callbacks = {
 
         <v-divider class="ma-3"></v-divider>
 
-        <v-btn :disabled="isSubmitDisabled" color="primary" type="submit">
+        <v-btn :disabled="isSubmitDisabled || waitingSearch" :loading="waitingSearch" color="primary" type="submit">
           Поиск
         </v-btn>
       </form>
@@ -102,9 +116,7 @@ const callbacks = {
     <template v-if="isFullSearch">
       <v-divider class="ma-5"></v-divider>
 
-      <ContainerQuestionsTable
-        :search="{ deckId: searchData.deckId, tags: searchData.tagId, query: searchData.query }"
-      />
+      <ContainerQuestionsTable />
     </template>
   </PageLayout>
 </template>

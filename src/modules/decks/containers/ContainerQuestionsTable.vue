@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, toValue } from 'vue';
-import { useRoute } from 'vue-router';
+import { onUnmounted, ref } from 'vue';
 
 import { useDeckStore } from '@/stores/decks';
 import { useQuestionsStore } from '@/stores/questions';
@@ -10,28 +9,8 @@ import QuestionsTable from '@/components/QuestionsTable.vue';
 
 import { TQuestion } from '@/types/question';
 
-const props = defineProps<{
-    search?: {
-        deckId: string[];
-        tags: string[];
-        query: string;
-    }
-}>();
-
-onMounted(() => {
-    console.log(props.search);
-});
-
-const route = useRoute();
-
 const decksStore = useDeckStore();
 const questionsStore = useQuestionsStore();
-
-if (! props.search) {
-    questionsStore.getQuestions({ deckId: Number(route.params.id) });
-} else {
-    questionsStore.searchQuestions(toValue(props.search));
-}
 
 onUnmounted(() => questionsStore.resetState());
 
@@ -46,7 +25,7 @@ const callbacks = {
     waitQuestionDelete.value = true;
 
     await questionsStore.deleteQuestion({
-      deckId: String(route.params.id),
+      deckId: questionsStore.deckId,
       questionId: deleteQuestionId.value,
     });
 
@@ -81,7 +60,6 @@ const callbacks = {
 
         <QuestionsTable
           v-if="questionsStore.questions.length"
-          :deck-id="String($route.params.id)"
           :questions="questionsStore.questions"
           @delete="callbacks.activateDeleteQuestionDialog"
         />
@@ -98,14 +76,14 @@ const callbacks = {
     </CenterWhiteBlock>
 
     <v-snackbar v-model="successSnack" color="primary">
-    <template #actions>
-      <div class="pa-3">Коллекция была успешно обновлена.</div>
+        <template #actions>
+        <div class="pa-3">Коллекция была успешно обновлена.</div>
 
-      <v-btn color="secondary" variant="flat" @click="successSnack = false">
-        Понял
-      </v-btn>
-    </template>
-  </v-snackbar>
+        <v-btn color="secondary" variant="flat" @click="successSnack = false">
+            Понял
+        </v-btn>
+        </template>
+    </v-snackbar>
 
   <v-dialog v-model="deleteQuestionDialog" max-width="500">
     <v-card>
