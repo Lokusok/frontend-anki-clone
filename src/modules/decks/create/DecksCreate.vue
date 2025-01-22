@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, toValue } from 'vue';
 
-import { useDeckStore } from '../../stores/decks';
-import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
-import PageLayout from '../../components/layouts/PageLayout.vue';
+import { useDeckStore } from '@/stores/decks';
+import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
+import PageLayout from '@/components/layouts/PageLayout.vue';
 
 const deckStore = useDeckStore();
 

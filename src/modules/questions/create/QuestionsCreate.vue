@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
-import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
-import PageLayout from '../../components/layouts/PageLayout.vue';
-import { useDeckStore } from '../../stores/decks';
-import { useQuestionsStore } from '../../stores/questions';
+import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
+import PageLayout from '@/components/layouts/PageLayout.vue';
+import { useDeckStore } from '@/stores/decks';
+import { useQuestionsStore } from '@/stores/questions';
 
 const decksStore = useDeckStore();
 const questionsStore = useQuestionsStore();

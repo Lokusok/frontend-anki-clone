@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
-import { useDeckStore } from '../../stores/decks';
-import { TDeck } from '../../types/deck';
+import { useDeckStore } from '@/stores/decks';
 
-import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
-import PageLayout from '../../components/layouts/PageLayout.vue';
-import DecksTable from '../../components/DecksTable.vue';
-import router from '../../router';
-import { TDeckSearchInput } from '../../types/input/deck';
+import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
+import PageLayout from '@/components/layouts/PageLayout.vue';
+import DecksTable from '@/components/DecksTable.vue';
+
+import { TDeck } from '@/types/deck';
+import { TDeckSearchInput } from '@/types/input/deck';
 
 const decksStore = useDeckStore();
+const router = useRouter();
 const route = useRoute();
 
 const hasFilters = computed(() => {

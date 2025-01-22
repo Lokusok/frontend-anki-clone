@@ -7,16 +7,16 @@ import {
 import { useSessionStore } from './stores/session';
 
 import HomeView from './pages/home/HomeView.vue';
-import DecksList from './pages/decks-list/DecksList.vue';
-import DecksCreate from './pages/decks-create/DecksCreate.vue';
-import Login from './pages/login/Login.vue';
-import Register from './pages/register/Register.vue';
-import DecksSearch from './pages/decks-search/DecksSearch.vue';
-import Profile from './pages/profile/Profile.vue';
-import DecksEdit from './pages/decks-edit/DecksEdit.vue';
-import QuestionsCreate from './pages/questions-create/QuestionsCreate.vue';
-import QuestionsAnswer from './pages/questions-answer/QuestionsAnswer.vue';
-import QuestionsEdit from './pages/questions-edit/QuestionsEdit.vue';
+import DecksIndex from './pages/decks/index/DecksIndex.vue';
+import DecksCreate from './pages/decks/create/DecksCreate.vue';
+import DecksSearch from './pages/decks/search/DecksSearch.vue';
+import DecksEdit from './pages/decks/edit/DecksEdit.vue';
+import QuestionsCreate from './pages/questions/create/QuestionsCreate.vue';
+import QuestionsEdit from './pages/questions/edit/QuestionsEdit.vue';
+import QuestionsAnswer from './pages/questions/answer/QuestionsAnswer.vue';
+import Login from './pages/session/login/Login.vue';
+import Register from './pages/session/register/Register.vue';
+import Profile from './pages/session/profile/Profile.vue';
 
 const routes = [
   {
@@ -29,7 +29,7 @@ const routes = [
   },
   {
     path: '/decks',
-    component: DecksList,
+    component: DecksIndex,
     name: 'decks.index',
     meta: {
       title: 'Коллекции',

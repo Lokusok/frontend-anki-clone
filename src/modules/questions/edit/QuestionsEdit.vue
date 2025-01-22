@@ -2,11 +2,11 @@
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
-import PageLayout from '../../components/layouts/PageLayout.vue';
+import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
+import PageLayout from '@/components/layouts/PageLayout.vue';
 
-import { useDeckStore } from '../../stores/decks';
-import { useQuestionsStore } from '../../stores/questions';
+import { useDeckStore } from '@/stores/decks';
+import { useQuestionsStore } from '@/stores/questions';
 
 const decksStore = useDeckStore();
 const questionsStore = useQuestionsStore();

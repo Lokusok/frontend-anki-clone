@@ -2,10 +2,10 @@
 import { ref, toValue } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { useFormState } from '../../composables/use-form-state';
-import { useSessionStore } from '../../stores/session';
-import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
-import PageLayout from '../../components/layouts/PageLayout.vue';
+import { useFormState } from '@/composables/use-form-state';
+import { useSessionStore } from '@/stores/session';
+import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
+import PageLayout from '@/components/layouts/PageLayout.vue';
 
 const sessionStore = useSessionStore();
 const router = useRouter();

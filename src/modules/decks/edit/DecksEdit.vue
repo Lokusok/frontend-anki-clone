@@ -2,12 +2,14 @@
 import { computed, onUnmounted, ref, toValue } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { useDeckStore } from '../../stores/decks';
-import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
-import PageLayout from '../../components/layouts/PageLayout.vue';
-import QuestionsTable from '../../components/QuestionsTable.vue';
-import { useQuestionsStore } from '../../stores/questions';
-import { TQuestion } from '../../types/question';
+import { useDeckStore } from '@/stores/decks';
+import { useQuestionsStore } from '@/stores/questions';
+
+import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
+import PageLayout from '@/components/layouts/PageLayout.vue';
+import QuestionsTable from '@/components/QuestionsTable.vue';
+
+import { TQuestion } from '@/types/question';
 
 const route = useRoute();
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PageLayout from '../../components/layouts/PageLayout.vue';
-import { useSessionStore } from '../../stores/session';
+import PageLayout from '@/components/layouts/PageLayout.vue';
+import { useSessionStore } from '@/stores/session';
 
 const sessionStore = useSessionStore();
 </script>

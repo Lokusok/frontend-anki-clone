@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
-import PageLayout from '../../components/layouts/PageLayout.vue';
+import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
+import PageLayout from '@/components/layouts/PageLayout.vue';
 
-import { useDeckStore } from '../../stores/decks';
-import { useTagsStore } from '../../stores/tags';
-import { useFormState } from '../../composables/use-form-state';
+import { useDeckStore } from '@/stores/decks';
+import { useTagsStore } from '@/stores/tags';
+import { useFormState } from '@/composables/use-form-state';
 
 const decksStore = useDeckStore();
 const tagsStore = useTagsStore();
@@ -15,6 +15,8 @@ const router = useRouter();
 
 decksStore.getAllDecks();
 tagsStore.getAllTags();
+
+const isFullSearch = ref(false);
 
 const { data: searchData } = useFormState({
   deckId: [],
@@ -46,6 +48,7 @@ const callbacks = {
       });
     } else {
       console.log('FULL SEARCH');
+      isFullSearch.value = true;
     }
   },
 };
@@ -94,5 +97,13 @@ const callbacks = {
         </v-btn>
       </form>
     </CenterWhiteBlock>
+
+    <template v-if="isFullSearch">
+      <v-divider class="ma-5"></v-divider>
+  
+      <CenterWhiteBlock>
+        <div class="text-center text-h5 font-weight-bold">Вопросы</div>
+      </CenterWhiteBlock>
+    </template>
   </PageLayout>
 </template>

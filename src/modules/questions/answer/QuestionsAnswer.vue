@@ -2,10 +2,10 @@
 import { onUnmounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
-import { useQuestionsStore } from '../../stores/questions';
+import { useQuestionsStore } from '@/stores/questions';
 
-import PageLayout from '../../components/layouts/PageLayout.vue';
-import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
+import PageLayout from '@/components/layouts/PageLayout.vue';
+import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
 
 const questionsStore = useQuestionsStore();
 const router = useRouter();
