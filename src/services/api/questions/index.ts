@@ -23,6 +23,15 @@ export const questionsService = {
     }
   },
 
+  async deleteQuestion(data: any): Promise<boolean | null> {
+    try {
+      const response = await apiClient.delete(`/api/v1/decks/${data['deckId']}/questions/${data['questionId']}`);
+      return response.status === 204;
+    } catch {
+      return null;
+    }
+  },
+
   async createQuestion(data: TQuestionInput): Promise<TQuestion | null> {
     try {
       const response = await apiClient.post(

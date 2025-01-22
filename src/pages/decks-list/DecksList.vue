@@ -93,7 +93,7 @@ const callbacks = {
     </CenterWhiteBlock>
   </PageLayout>
 
-  <v-dialog v-model="deleteDialog" :disabled="waitDelete" max-width="500">
+  <v-dialog v-model="deleteDialog" max-width="500">
     <v-card>
       <v-card-title class="d-flex justify-space-between">
         <div class="text-h5 ma-2">Подтвердите удаление</div>

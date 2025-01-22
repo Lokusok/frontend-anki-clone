@@ -39,6 +39,22 @@ export const useQuestionsStore = defineStore('questionsStore', {
       return response;
     },
 
+    async deleteQuestion(data: any): Promise<boolean | null> {
+      const response = await questionsService.deleteQuestion(data);
+
+      if (response) {
+        console.log({ response });
+
+        const foundedIndex = this.questions.findIndex((q) => q.id === data.questionId);
+
+        if (foundedIndex !== -1) {
+          this.questions.splice(foundedIndex, 1);
+        }
+      }
+
+      return response;
+    },
+
     async answerToCurrent(type: string) {
       const response = await questionsService.answerTo({
         questionId: this.currentQuestion.id,

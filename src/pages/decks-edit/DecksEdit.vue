@@ -7,6 +7,7 @@ import CenterWhiteBlock from '../../components/CenterWhiteBlock.vue';
 import PageLayout from '../../components/layouts/PageLayout.vue';
 import QuestionsTable from '../../components/QuestionsTable.vue';
 import { useQuestionsStore } from '../../stores/questions';
+import { TQuestion } from '../../types/question';
 
 const route = useRoute();
 
@@ -19,6 +20,10 @@ onUnmounted(() => questionsStore.resetState());
 
 const waiting = ref(false);
 const successSnack = ref(false);
+
+const waitQuestionDelete = ref(false);
+const deleteQuestionDialog = ref(false);
+const deleteQuestionId = ref<TQuestion['id'] | null>(null);
 
 const deck = ref({
   title: '',
@@ -34,16 +39,42 @@ const isSubmitBtnDisabled = computed(() => {
   return !deck.value.title;
 });
 
-const createDeck = async () => {
-  waiting.value = true;
+const callbacks = {
+  updateDeck: async () => {
+    waiting.value = true;
+  
+    await decksStore.createDeck(toValue(deck));
+  
+    waiting.value = false;
+  
+    deck.value.title = '';
+  
+    successSnack.value = true;
+  },
 
-  await decksStore.createDeck(toValue(deck));
+  deleteQuestion: async () => {
+    console.log('here');
+    waitQuestionDelete.value = true;
 
-  waiting.value = false;
+    await questionsStore.deleteQuestion({
+      deckId: String(route.params.id),
+      questionId: deleteQuestionId.value,
+    });
 
-  deck.value.title = '';
+    callbacks.resetDeleteQuestionDialog();
 
-  successSnack.value = true;
+    waitQuestionDelete.value = false;
+  },
+
+  activateDeleteQuestionDialog: (id: TQuestion['id']) => {
+    deleteQuestionId.value = id;
+    deleteQuestionDialog.value = true;
+  },
+
+  resetDeleteQuestionDialog: () => {
+    deleteQuestionId.value = null;
+    deleteQuestionDialog.value = false;
+  },
 };
 </script>
 
@@ -66,7 +97,7 @@ const createDeck = async () => {
         <v-progress-circular :size="50" color="primary" indeterminate />
       </div>
 
-      <form v-else @submit.prevent="createDeck">
+      <form v-else @submit.prevent="callbacks.updateDeck">
         <v-text-field
           v-model="deck.title"
           :disabled="waiting"
@@ -76,7 +107,9 @@ const createDeck = async () => {
           :disabled="isSubmitBtnDisabled || waiting"
           type="submit"
           color="primary"
-          >Создать</v-btn
+        >
+          Обновить
+        </v-btn
         >
       </form>
     </CenterWhiteBlock>
@@ -95,9 +128,20 @@ const createDeck = async () => {
         <div class="text-center text-h5 font-weight-bold">Вопросы</div>
 
         <QuestionsTable
+          v-if="questionsStore.questions.length"
           :deck-id="String($route.params.id)"
           :questions="questionsStore.questions"
+          @delete="callbacks.activateDeleteQuestionDialog"
         />
+
+        <div v-else class="d-flex justify-center mt-3">
+          <v-btn color="primary" :to="{ name: 'questions.create' }">
+            <template #prepend>
+              <v-icon icon="mdi-plus"></v-icon>
+            </template>
+            Добавить вопрос
+          </v-btn>
+        </div>
       </template>
     </CenterWhiteBlock>
   </PageLayout>
@@ -111,4 +155,51 @@ const createDeck = async () => {
       </v-btn>
     </template>
   </v-snackbar>
+
+  <v-dialog v-model="deleteQuestionDialog" max-width="500">
+    <v-card>
+      <v-card-title class="d-flex justify-space-between">
+        <div class="text-h5 ma-2">Подтвердите удаление</div>
+
+        <v-btn
+          :disabled="waitQuestionDelete"
+          :style="{
+            display: $vuetify.display.width < 430 ? 'none' : 'initial',
+          }"
+          icon="mdi-close"
+          variant="text"
+          @click="callbacks.resetDeleteQuestionDialog"
+        />
+      </v-card-title>
+      <v-card-text>
+        Удалённый вопрос не подлежит восстановлению.
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+
+        <v-btn
+          :disabled="waitQuestionDelete"
+          variant="flat"
+          color="primary"
+          @click="callbacks.resetDeleteQuestionDialog"
+        >
+          Отмена
+        </v-btn>
+
+        <v-btn
+          :loading="waitQuestionDelete"
+          variant="flat"
+          color="red"
+          class="font-weight-bold"
+          @click="callbacks.deleteQuestion"
+        >
+          <template #prepend>
+            <v-icon icon="mdi-trash-can" />
+          </template>
+          Да, удалить
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>

@@ -88,6 +88,15 @@ Promise.all([
 <template>
   <PageLayout title="Обновление вопроса">
     <CenterWhiteBlock>
+      <v-btn :to="{ name: 'decks.edit', params: { id: route.params.deckId } }" color="primary">
+        <template #prepend>
+          <v-icon icon="mdi-arrow-left-bold-circle" />
+        </template>
+        К коллекции
+      </v-btn>
+
+      <v-divider class="ma-3"></v-divider>
+
       <form @submit.prevent="callbacks.updateQuestion">
         <v-select
           v-model="question.deckId"
