@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
+
 import { questionsService } from '../../services/api/questions';
 import { TQuestionInput, TQuestionsGetInput } from '../../types/input/question';
+
 import { TQuestion } from '../../types/question';
 import { TDeck } from '../../types/deck';
 
@@ -72,7 +74,18 @@ export const useQuestionsStore = defineStore('questionsStore', {
       return response;
     },
 
+    async searchQuestions(data: any) {
+      const questions = await questionsService.searchQuestions(data);
+
+      if (questions) {
+        this.questions = questions;
+      }
+
+      return questions;
+    },
+
     resetState() {
+      this.waiting = false;
       this.deckId = null;
       this.questions = [];
       this.offset = 0;

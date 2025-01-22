@@ -7,9 +7,9 @@ import { useQuestionsStore } from '@/stores/questions';
 
 import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
 import PageLayout from '@/components/layouts/PageLayout.vue';
-import QuestionsTable from '@/components/QuestionsTable.vue';
 
 import { TQuestion } from '@/types/question';
+import ContainerQuestionsTable from '../containers/ContainerQuestionsTable.vue';
 
 const route = useRoute();
 
@@ -118,90 +118,6 @@ const callbacks = {
 
     <v-divider class="ma-5"></v-divider>
 
-    <CenterWhiteBlock>
-      <div
-        v-if="decksStore.waiting || questionsStore.waiting"
-        class="d-flex justify-center align-center h-100"
-      >
-        <v-progress-circular :size="50" color="primary" indeterminate />
-      </div>
-
-      <template v-else>
-        <div class="text-center text-h5 font-weight-bold">Вопросы</div>
-
-        <QuestionsTable
-          v-if="questionsStore.questions.length"
-          :deck-id="String($route.params.id)"
-          :questions="questionsStore.questions"
-          @delete="callbacks.activateDeleteQuestionDialog"
-        />
-
-        <div v-else class="d-flex justify-center mt-3">
-          <v-btn color="primary" :to="{ name: 'questions.create' }">
-            <template #prepend>
-              <v-icon icon="mdi-plus"></v-icon>
-            </template>
-            Добавить вопрос
-          </v-btn>
-        </div>
-      </template>
-    </CenterWhiteBlock>
+    <ContainerQuestionsTable />
   </PageLayout>
-
-  <v-snackbar v-model="successSnack" color="primary">
-    <template #actions>
-      <div class="pa-3">Коллекция была успешно обновлена.</div>
-
-      <v-btn color="secondary" variant="flat" @click="successSnack = false">
-        Понял
-      </v-btn>
-    </template>
-  </v-snackbar>
-
-  <v-dialog v-model="deleteQuestionDialog" max-width="500">
-    <v-card>
-      <v-card-title class="d-flex justify-space-between">
-        <div class="text-h5 ma-2">Подтвердите удаление</div>
-
-        <v-btn
-          :disabled="waitQuestionDelete"
-          :style="{
-            display: $vuetify.display.width < 430 ? 'none' : 'initial',
-          }"
-          icon="mdi-close"
-          variant="text"
-          @click="callbacks.resetDeleteQuestionDialog"
-        />
-      </v-card-title>
-      <v-card-text>
-        Удалённый вопрос не подлежит восстановлению.
-      </v-card-text>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-
-        <v-btn
-          :disabled="waitQuestionDelete"
-          variant="flat"
-          color="primary"
-          @click="callbacks.resetDeleteQuestionDialog"
-        >
-          Отмена
-        </v-btn>
-
-        <v-btn
-          :loading="waitQuestionDelete"
-          variant="flat"
-          color="red"
-          class="font-weight-bold"
-          @click="callbacks.deleteQuestion"
-        >
-          <template #prepend>
-            <v-icon icon="mdi-trash-can" />
-          </template>
-          Да, удалить
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
 </template>

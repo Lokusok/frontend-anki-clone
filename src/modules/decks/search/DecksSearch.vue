@@ -2,12 +2,14 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
+import { useFormState } from '@/composables/use-form-state';
+import { useDeckStore } from '@/stores/decks';
+import { useTagsStore } from '@/stores/tags';
+
 import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
 import PageLayout from '@/components/layouts/PageLayout.vue';
 
-import { useDeckStore } from '@/stores/decks';
-import { useTagsStore } from '@/stores/tags';
-import { useFormState } from '@/composables/use-form-state';
+import ContainerQuestionsTable from '../containers/ContainerQuestionsTable.vue';
 
 const decksStore = useDeckStore();
 const tagsStore = useTagsStore();
@@ -47,7 +49,6 @@ const callbacks = {
         },
       });
     } else {
-      console.log('FULL SEARCH');
       isFullSearch.value = true;
     }
   },
@@ -100,10 +101,10 @@ const callbacks = {
 
     <template v-if="isFullSearch">
       <v-divider class="ma-5"></v-divider>
-  
-      <CenterWhiteBlock>
-        <div class="text-center text-h5 font-weight-bold">Вопросы</div>
-      </CenterWhiteBlock>
+
+      <ContainerQuestionsTable
+        :search="{ deckId: searchData.deckId, tags: searchData.tagId, query: searchData.query }"
+      />
     </template>
   </PageLayout>
 </template>

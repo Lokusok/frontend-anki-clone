@@ -81,4 +81,17 @@ export const questionsService = {
         return null
     }
   },
+
+  async searchQuestions(data: any) {
+    console.log(data.deckId, data.deckId.toString());
+    const response = await apiClient.get(`/api/v1/decks/questions/search`, {
+      params: {
+        deck_id: data.deckId.toString(),
+        tags: data.tags.toString(),
+        query: data.query,
+      }
+    });
+    console.log(response.data);
+    return response.data.data;
+  },
 };
