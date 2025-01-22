@@ -25,7 +25,9 @@ const deck = ref({
 });
 
 decksStore.getDeck(Number(route.params.id)).then((fetchedDeck) => {
-  deck.value.title = fetchedDeck.title;
+  if (fetchedDeck) {
+    deck.value.title = fetchedDeck.title;
+  }
 });
 
 const isSubmitBtnDisabled = computed(() => {
@@ -91,8 +93,11 @@ const createDeck = async () => {
 
       <template v-else>
         <div class="text-center text-h5 font-weight-bold">Вопросы</div>
-  
-        <QuestionsTable :questions="questionsStore.questions" />
+
+        <QuestionsTable
+          :deck-id="String($route.params.id)"
+          :questions="questionsStore.questions"
+        />
       </template>
     </CenterWhiteBlock>
   </PageLayout>

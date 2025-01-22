@@ -9,7 +9,7 @@ import { useQuestionsStore } from '../../stores/questions';
 const decksStore = useDeckStore();
 const questionsStore = useQuestionsStore();
 
-const decksTitles = ref<{ id: number, title: string }[]>([]);
+const decksTitles = ref<{ id: number | string, title: string }[]>([]);
 const waitingTitles = ref(true);
 
 decksStore

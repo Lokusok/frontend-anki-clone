@@ -16,6 +16,7 @@ import Profile from './pages/profile/Profile.vue';
 import DecksEdit from './pages/decks-edit/DecksEdit.vue';
 import QuestionsCreate from './pages/questions-create/QuestionsCreate.vue';
 import QuestionsAnswer from './pages/questions-answer/QuestionsAnswer.vue';
+import QuestionsEdit from './pages/questions-edit/QuestionsEdit.vue';
 
 const routes = [
   {
@@ -64,6 +65,14 @@ const routes = [
     name: 'questions.create',
     meta: {
       title: 'Создание вопроса',
+    },
+  },
+  {
+    path: '/decks/:deckId/questions/:questionId/edit',
+    component: QuestionsEdit,
+    name: 'questions.edit',
+    meta: {
+      title: 'Обновление вопроса',
     },
   },
   {

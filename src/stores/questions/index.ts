@@ -31,7 +31,11 @@ export const useQuestionsStore = defineStore('questionsStore', {
 
     async createQuestion(data: TQuestionInput) {
       const response = await questionsService.createQuestion(data);
-      console.log('[CREATED]: ', response);
+      return response;
+    },
+
+    async updateQuestion(data: TQuestionInput & { id: string | number }) {
+      const response = await questionsService.updateQuestion(data);
       return response;
     },
 
@@ -45,6 +49,11 @@ export const useQuestionsStore = defineStore('questionsStore', {
       if (response) {
         this.offset++;
       }
+    },
+
+    async getQuestion(data: { deckId: string | number, questionId: string | number }): Promise<TQuestion | null> {
+      const response = await questionsService.getQuestion(data);
+      return response;
     },
 
     resetState() {

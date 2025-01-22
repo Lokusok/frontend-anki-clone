@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import { TDeck } from '../types/deck';
 import { TQuestion } from '../types/question';
 
 defineProps<{
-    questions: TQuestion[];
+  deckId: TDeck['id'];
+  questions: TQuestion[];
 }>();
 
 defineEmits<{
-    delete: [id: TQuestion['id']];
+  delete: [id: TQuestion['id']];
 }>();
 </script>
 
@@ -25,7 +27,9 @@ defineEmits<{
       <tr v-for="question in $props.questions" :key="question.id">
         <td class="text-center">{{ question.front }}</td>
         <td class="text-center">{{ question.back }}</td>
-        <td class="text-center">{{ question.tags.map((t) => t.title).join(', ') }}</td>
+        <td class="text-center">
+          {{ question.tags.map((t) => t.title).join(', ') }}
+        </td>
         <td class="text-center">{{ 'TODO' }}</td>
         <td class="d-flex justify-center">
           <div class="d-flex ga-2 py-2">
@@ -33,7 +37,12 @@ defineEmits<{
               color="secondary"
               icon="mdi-pen"
               size="x-small"
+              :to="{
+                name: 'questions.edit',
+                params: { deckId: $props.deckId, questionId: question.id },
+              }"
             ></v-btn>
+
             <v-btn
               color="red"
               icon="mdi-trash-can"
