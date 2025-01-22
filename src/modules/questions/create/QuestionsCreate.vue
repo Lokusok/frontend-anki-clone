@@ -46,7 +46,7 @@ const createQuestion = async () => {
 
   waitingQuestionCreate.value = false;
 
-  question.value.deckId = '';
+  // question.value.deckId = '';
   question.value.front = '';
   question.value.back = '';
   question.value.tags = '';

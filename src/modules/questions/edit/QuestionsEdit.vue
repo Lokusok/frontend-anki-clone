@@ -62,7 +62,7 @@ const callbacks = {
     waitingQuestionUpdate.value = true;
 
     await questionsStore.updateQuestion({
-        id: String(route.params.questionId),
+      id: String(route.params.questionId),
       deckId: question.value.deckId,
       front: question.value.front,
       back: question.value.back,
@@ -81,18 +81,23 @@ waitingInit.value = true;
 Promise.all([
   initializators.loadDecksTitles(),
   initializators.loadCurrentQuestion(),
-])
-.finally(() => waitingInit.value = false);
+]).finally(() => (waitingInit.value = false));
+
+const isHaveBack = window.history.state.back;
 </script>
 
 <template>
   <PageLayout title="Обновление вопроса">
     <CenterWhiteBlock>
-      <v-btn :to="{ name: 'decks.edit', params: { id: route.params.deckId } }" color="primary">
+      <v-btn
+        v-if="isHaveBack"
+        :to="isHaveBack"
+        color="primary"
+      >
         <template #prepend>
           <v-icon icon="mdi-arrow-left-bold-circle" />
         </template>
-        К коллекции
+        Назад
       </v-btn>
 
       <v-divider class="ma-3"></v-divider>
