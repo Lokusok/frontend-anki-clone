@@ -29,7 +29,7 @@ const callbacks = {
     deck.value.title = '';
   
     successSnack.value = true;
-  };
+  },
 };
 </script>
 

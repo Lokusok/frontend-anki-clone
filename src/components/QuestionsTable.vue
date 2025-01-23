@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { TQuestion } from '../types/question';
+import { isAfter, parse } from 'date-fns';
+import { TQuestion } from '@/types/question';
 
 defineProps<{
   questions: TQuestion[];
@@ -8,6 +9,12 @@ defineProps<{
 defineEmits<{
   delete: [id: TQuestion['id']];
 }>();
+
+const helpers = {
+  isQuestionReady: (question: TQuestion): boolean => {
+    return isAfter(parse(question.when_ask, 'dd.MM.yyyy', new Date()), new Date());
+  },
+};
 </script>
 
 <template>
@@ -28,7 +35,7 @@ defineEmits<{
         <td class="text-center">
           {{ question.tags.map((t) => t.title).join(', ') }}
         </td>
-        <td class="text-center">{{ 'TODO' }}</td>
+        <td class="text-center">{{ helpers.isQuestionReady(question) ? 'Да' : 'Нет' }}</td>
         <td class="d-flex justify-center">
           <div class="d-flex ga-2 py-2">
             <v-btn

@@ -102,6 +102,8 @@ const callbacks = {
           <v-text-field
             v-model="searchData.query"
             label="Содержимое"
+            :loading="tagsStore.waiting || waitingSearch"
+            :disabled="tagsStore.waiting || waitingSearch"
           ></v-text-field>
         </div>
 
