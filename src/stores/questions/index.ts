@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia';
 
 import { questionsService } from '../../services/api/questions';
-import { TQuestionInput, TQuestionsGetInput } from '../../types/input/question';
+import { TQuestionDeleteInput, TQuestionInput, TQuestionsGetInput, TQuestionsSearch } from '../../types/input/question';
 
-import { TQuestion } from '../../types/question';
-import { TDeck } from '../../types/deck';
+import { TQuestion } from '@/types/question';
+import { TDeck } from '@/types/deck';
+import { AnswersEnum } from '@/types/answers';
 
 export const useQuestionsStore = defineStore('questionsStore', {
   state: () => ({
@@ -41,7 +42,7 @@ export const useQuestionsStore = defineStore('questionsStore', {
       return response;
     },
 
-    async deleteQuestion(data: any): Promise<boolean | null> {
+    async deleteQuestion(data: TQuestionDeleteInput): Promise<boolean | null> {
       const response = await questionsService.deleteQuestion(data);
 
       if (response) {
@@ -57,10 +58,10 @@ export const useQuestionsStore = defineStore('questionsStore', {
       return response;
     },
 
-    async answerToCurrent(type: string) {
+    async answerToCurrent(type: AnswersEnum) {
       const response = await questionsService.answerTo({
         questionId: this.currentQuestion.id,
-        deckId: this.deckId,
+        deckId: this.deckId!,
         type,
       });
 
@@ -74,7 +75,7 @@ export const useQuestionsStore = defineStore('questionsStore', {
       return response;
     },
 
-    async searchQuestions(data: any) {
+    async searchQuestions(data: TQuestionsSearch) {
       const questions = await questionsService.searchQuestions(data);
 
       if (questions) {

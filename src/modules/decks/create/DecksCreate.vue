@@ -18,23 +18,25 @@ const isSubmitBtnDisabled = computed(() => {
   return !deck.value.title;
 });
 
-const createDeck = async () => {
-  waiting.value = true;
-
-  await deckStore.createDeck(toValue(deck));
-
-  waiting.value = false;
-
-  deck.value.title = '';
-
-  successSnack.value = true;
+const callbacks = {
+  createDeck: async () => {
+    waiting.value = true;
+  
+    await deckStore.createDeck(toValue(deck));
+  
+    waiting.value = false;
+  
+    deck.value.title = '';
+  
+    successSnack.value = true;
+  };
 };
 </script>
 
 <template>
   <PageLayout title="Добавить коллекцию">
     <CenterWhiteBlock>
-      <form @submit.prevent="createDeck">
+      <form @submit.prevent="callbacks.createDeck">
         <v-text-field
           v-model="deck.title"
           :disabled="waiting"

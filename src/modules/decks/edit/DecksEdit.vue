@@ -31,11 +31,12 @@ const deck = ref({
   title: '',
 });
 
-decksStore.getDeck(Number(route.params.id)).then((fetchedDeck) => {
-  if (fetchedDeck) {
+const inits = {
+  getCurrentDeck: async () => {
+    const fetchedDeck = await decksStore.getDeck(Number(route.params.id));
     deck.value.title = fetchedDeck.title;
-  }
-});
+  },
+};
 
 const isSubmitBtnDisabled = computed(() => {
   return !deck.value.title;
@@ -44,13 +45,13 @@ const isSubmitBtnDisabled = computed(() => {
 const callbacks = {
   updateDeck: async () => {
     waiting.value = true;
-  
+
     await decksStore.createDeck(toValue(deck));
-  
+
     waiting.value = false;
-  
+
     deck.value.title = '';
-  
+
     successSnack.value = true;
   },
 
@@ -78,6 +79,8 @@ const callbacks = {
     deleteQuestionDialog.value = false;
   },
 };
+
+inits.getCurrentDeck();
 </script>
 
 <template>
@@ -111,8 +114,7 @@ const callbacks = {
           color="primary"
         >
           Обновить
-        </v-btn
-        >
+        </v-btn>
       </form>
     </CenterWhiteBlock>
 

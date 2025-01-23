@@ -24,10 +24,12 @@ const callbacks = {
   deleteQuestion: async () => {
     waitQuestionDelete.value = true;
 
-    await questionsStore.deleteQuestion({
-      deckId: questionsStore.deckId,
-      questionId: deleteQuestionId.value,
-    });
+    if (questionsStore.deckId && deleteQuestionId.value) {
+      await questionsStore.deleteQuestion({
+        deckId: questionsStore.deckId,
+        questionId: deleteQuestionId.value,
+      });
+    }
 
     callbacks.resetDeleteQuestionDialog();
 

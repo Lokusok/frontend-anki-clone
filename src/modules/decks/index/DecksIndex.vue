@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { useDeckStore } from '@/stores/decks';
@@ -20,13 +20,9 @@ const hasFilters = computed(() => {
 });
 
 watchEffect(() => {
-  console.log(route.query);
-  if (hasFilters.value) decksStore.getAllDecks(route.query as unknown as TDeckSearchInput);
+  if (hasFilters.value)
+    decksStore.getAllDecks(route.query as unknown as TDeckSearchInput);
   else decksStore.getAllDecks();
-});
-
-onMounted(() => {
-  console.log(route.query, '<<<');
 });
 
 const waitDelete = ref(false);
@@ -34,40 +30,39 @@ const waitDelete = ref(false);
 const deleteDialog = ref(false);
 const deleteDeckId = ref<TDeck['id'] | null>(null);
 
-const activateDeleteDialog = (id: TDeck['id']) => {
-  deleteDeckId.value = id;
-  deleteDialog.value = true;
-};
-
-const resetDeleteDialog = () => {
-  deleteDeckId.value = null;
-  deleteDialog.value = false;
-};
-
-const deleteDeck = async () => {
-  if (!deleteDeckId.value) {
-    return;
-  }
-
-  waitDelete.value = true;
-
-  await decksStore.deleteDeck(deleteDeckId.value);
-
-  waitDelete.value = false;
-
-  resetDeleteDialog();
-};
-
 const callbacks = {
   resetFilters: () => {
     router.replace({ query: {} });
+  },
+
+  deleteDeck: async () => {
+    if (!deleteDeckId.value) {
+      return;
+    }
+
+    waitDelete.value = true;
+
+    await decksStore.deleteDeck(deleteDeckId.value);
+
+    waitDelete.value = false;
+
+    callbacks.resetDeleteDialog();
+  },
+
+  activateDeleteDialog: (id: TDeck['id']) => {
+    deleteDeckId.value = id;
+    deleteDialog.value = true;
+  },
+
+  resetDeleteDialog: () => {
+    deleteDeckId.value = null;
+    deleteDialog.value = false;
   },
 };
 </script>
 
 <template>
   <PageLayout title="Список коллекций">
-
     <div v-if="hasFilters" class="d-flex justify-center mb-4">
       <v-btn color="primary" @click="callbacks.resetFilters">
         <template #prepend>
@@ -89,7 +84,7 @@ const callbacks = {
       <DecksTable
         v-else
         :decks="decksStore.decks"
-        @delete="activateDeleteDialog"
+        @delete="callbacks.activateDeleteDialog"
       />
     </CenterWhiteBlock>
   </PageLayout>
@@ -103,7 +98,7 @@ const callbacks = {
           :disabled="waitDelete"
           icon="mdi-close"
           variant="text"
-          @click="resetDeleteDialog"
+          @click="callbacks.resetDeleteDialog"
           :style="{
             display: $vuetify.display.width < 430 ? 'none' : 'initial',
           }"
@@ -120,7 +115,7 @@ const callbacks = {
           :disabled="waitDelete"
           variant="flat"
           color="primary"
-          @click="resetDeleteDialog"
+          @click="callbacks.resetDeleteDialog"
         >
           Отмена
         </v-btn>
@@ -130,7 +125,7 @@ const callbacks = {
           variant="flat"
           color="red"
           class="font-weight-bold"
-          @click="deleteDeck"
+          @click="callbacks.deleteDeck"
         >
           <template #prepend>
             <v-icon icon="mdi-trash-can" />

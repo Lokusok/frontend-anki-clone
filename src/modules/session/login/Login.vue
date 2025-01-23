@@ -22,28 +22,30 @@ const {
   password: '',
 });
 
-const loginUser = async () => {
-  waiting.value = true;
-
-  const loginErrors = await sessionStore.loginUser(toValue(user));
-
-  if (loginErrors) {
-    errors.value.message = loginErrors.message;
-
-    errors.value.email = loginErrors.errors.email?.[0];
-    errors.value.password = loginErrors.errors.password?.[0];
-  } else {
-    router.replace({ name: 'profile' });
-  }
-
-  waiting.value = false;
+const callbacks = {
+  loginUser: async () => {
+    waiting.value = true;
+  
+    const loginErrors = await sessionStore.loginUser(toValue(user));
+  
+    if (loginErrors) {
+      errors.value.message = loginErrors.message;
+  
+      errors.value.email = loginErrors.errors.email?.[0];
+      errors.value.password = loginErrors.errors.password?.[0];
+    } else {
+      router.replace({ name: 'profile' });
+    }
+  
+    waiting.value = false;
+  },
 };
 </script>
 
 <template>
   <PageLayout title="Войти в аккаунт">
     <CenterWhiteBlock>
-      <form @submit.prevent="loginUser">
+      <form @submit.prevent="callbacks.loginUser">
         <v-text-field
           v-model="user.email"
           :disabled="waiting"

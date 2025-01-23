@@ -31,7 +31,7 @@ const isSubmitBtnDisabled = computed(() => {
   );
 });
 
-const initializators = {
+const inits = {
   loadDecksTitles: async () => {
     const titles = await decksStore.getAllDecksTitles();
 
@@ -79,8 +79,8 @@ const callbacks = {
 
 waitingInit.value = true;
 Promise.all([
-  initializators.loadDecksTitles(),
-  initializators.loadCurrentQuestion(),
+  inits.loadDecksTitles(),
+  inits.loadCurrentQuestion(),
 ]).finally(() => (waitingInit.value = false));
 
 const isHaveBack = window.history.state.back;

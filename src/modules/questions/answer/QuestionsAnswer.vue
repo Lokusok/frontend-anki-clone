@@ -6,6 +6,7 @@ import { useQuestionsStore } from '@/stores/questions';
 
 import PageLayout from '@/components/layouts/PageLayout.vue';
 import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
+import { AnswersEnum } from '@/types/answers';
 
 const questionsStore = useQuestionsStore();
 const router = useRouter();
@@ -19,7 +20,7 @@ const api = {
     questionsStore.getQuestions({ deckId: String(route.params.deckId), askReady: true });
   },
 
-  answer: async (type: string) => {
+  answer: async (type: AnswersEnum) => {
     isWaitingAnswer.value = true;
 
     await questionsStore.answerToCurrent(type);
@@ -71,13 +72,13 @@ onUnmounted(() => questionsStore.resetState());
               <v-btn :disabled="isWaitingAnswer" 
                 variant="flat"
                 color="primary"
-                @click="api.answer('again')"
+                @click="api.answer(AnswersEnum.AGAIN)"
               >
                 Заново
               </v-btn>
-              <v-btn :disabled="isWaitingAnswer" color="primary" @click="api.answer('hard')">Тяжело</v-btn>
-              <v-btn :disabled="isWaitingAnswer" color="primary" @click="api.answer('good')">Хорошо</v-btn>
-              <v-btn :disabled="isWaitingAnswer" variant="flat" color="primary" @click="api.answer('easy')">
+              <v-btn :disabled="isWaitingAnswer" color="primary" @click="api.answer(AnswersEnum.HARD)">Тяжело</v-btn>
+              <v-btn :disabled="isWaitingAnswer" color="primary" @click="api.answer(AnswersEnum.GOOD)">Хорошо</v-btn>
+              <v-btn :disabled="isWaitingAnswer" variant="flat" color="primary" @click="api.answer(AnswersEnum.EASY)">
                 Легко
               </v-btn>
             </v-btn-group>

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 
 import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
 import PageLayout from '@/components/layouts/PageLayout.vue';
+
 import { useDeckStore } from '@/stores/decks';
 import { useQuestionsStore } from '@/stores/questions';
 
@@ -34,29 +35,31 @@ const isSubmitBtnDisabled = computed(() => {
   return !question.value.deckId || !question.value.front || !question.value.back;
 });
 
-const createQuestion = async () => {
-  waitingQuestionCreate.value = true;
+const callbacks = {
+  createQuestion: async () => {
+    waitingQuestionCreate.value = true;
 
-  await questionsStore.createQuestion({
-    deckId: question.value.deckId,
-    front: question.value.front,
-    back: question.value.back,
-    tags: question.value.tags.split(',').map((s) => s.trim()).filter((s) => s.length > 0),
-  });
+    await questionsStore.createQuestion({
+      deckId: question.value.deckId,
+      front: question.value.front,
+      back: question.value.back,
+      tags: question.value.tags.split(',').map((s) => s.trim()).filter((s) => s.length > 0),
+    });
 
-  waitingQuestionCreate.value = false;
+    waitingQuestionCreate.value = false;
 
-  // question.value.deckId = '';
-  question.value.front = '';
-  question.value.back = '';
-  question.value.tags = '';
+    // question.value.deckId = '';
+    question.value.front = '';
+    question.value.back = '';
+    question.value.tags = '';
+  },
 };
 </script>
 
 <template>
   <PageLayout title="Создание вопроса">
     <CenterWhiteBlock>
-      <form @submit.prevent="createQuestion">
+      <form @submit.prevent="callbacks.createQuestion">
         <v-select
           v-model="question.deckId"
           :loading="waitingTitles"

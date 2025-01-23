@@ -1,9 +1,12 @@
 import { apiClient } from '..';
 import {
+  TQuestionDeleteInput,
   TQuestionInput,
   TQuestionsGetInput,
-} from '../../../types/input/question';
-import { TQuestion } from '../../../types/question';
+  TQuestionsSearch,
+} from '@/types/input/question';
+import { TAnswer } from '@/types/answers';
+import { TQuestion } from '@/types/question';
 
 export const questionsService = {
   async getQuestions(data: TQuestionsGetInput): Promise<TQuestion[] | null> {
@@ -23,7 +26,7 @@ export const questionsService = {
     }
   },
 
-  async deleteQuestion(data: any): Promise<boolean | null> {
+  async deleteQuestion(data: TQuestionDeleteInput): Promise<boolean | null> {
     try {
       const response = await apiClient.delete(`/api/v1/decks/${data['deckId']}/questions/${data['questionId']}`);
       return response.status === 204;
@@ -59,7 +62,7 @@ export const questionsService = {
       }
   },
 
-  async answerTo(data: any) {
+  async answerTo(data: TAnswer) {
     try {
       const response = await apiClient.post(
         `/api/v1/decks/${data.deckId}/questions/${data.questionId}/answer`,
@@ -82,8 +85,7 @@ export const questionsService = {
     }
   },
 
-  async searchQuestions(data: any) {
-    console.log(data.deckId, data.deckId.toString());
+  async searchQuestions(data: TQuestionsSearch) {
     const response = await apiClient.get(`/api/v1/decks/questions/search`, {
       params: {
         deck_id: data.deckId.toString(),

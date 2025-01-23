@@ -14,48 +14,54 @@ const router = useRouter();
 const waiting = ref(false);
 const isShowPasswords = ref(false);
 
-const { data: user, errors, isSubmitDisabled } = useFormState({
+const {
+  data: user,
+  errors,
+  isSubmitDisabled,
+} = useFormState({
   name: '',
   email: '',
   password: '',
   password_confirmation: '',
 });
 
-const registerUser = async () => {
-  waiting.value = true;
+const callbacks = {
+  registerUser: async () => {
+    waiting.value = true;
 
-  const registerErrors = await sessionStore.registerUser(toValue(user));
+    const registerErrors = await sessionStore.registerUser(toValue(user));
 
-  console.log({registerErrors});
+    console.log({ registerErrors });
 
-  waiting.value = false;
+    waiting.value = false;
 
-  if (registerErrors) {
-    errors.value.message = registerErrors.message;
+    if (registerErrors) {
+      errors.value.message = registerErrors.message;
 
-    errors.value.name = registerErrors.errors.name?.[0];
-    errors.value.email = registerErrors.errors.email?.[0];
-    errors.value.password = registerErrors.errors.password?.[0];
-    errors.value.password_confirmation =
-      registerErrors.errors.password_confirmation?.[0];
+      errors.value.name = registerErrors.errors.name?.[0];
+      errors.value.email = registerErrors.errors.email?.[0];
+      errors.value.password = registerErrors.errors.password?.[0];
+      errors.value.password_confirmation =
+        registerErrors.errors.password_confirmation?.[0];
 
-    user.value.password = '';
-    user.value.password_confirmation = '';
-  } else {
-    errors.value.name = '';
-    errors.value.email = '';
-    errors.value.password = '';
-    errors.value.password_confirmation = '';
+      user.value.password = '';
+      user.value.password_confirmation = '';
+    } else {
+      errors.value.name = '';
+      errors.value.email = '';
+      errors.value.password = '';
+      errors.value.password_confirmation = '';
 
-    router.replace({ name: 'profile' });
-  }
+      router.replace({ name: 'profile' });
+    }
+  },
 };
 </script>
 
 <template>
   <PageLayout title="Регистрация">
     <CenterWhiteBlock>
-      <form @submit.prevent="registerUser">
+      <form @submit.prevent="callbacks.registerUser">
         <v-text-field
           v-model="user.name"
           :disabled="waiting"
