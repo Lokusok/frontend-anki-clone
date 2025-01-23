@@ -1,24 +1,21 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { useTheme } from 'vuetify';
 
 import { useSessionStore } from '@/stores/session';
 
 import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
 import PageLayout from '@/components/layouts/PageLayout.vue';
 
+import { useThemeSwitch } from '@/composables/use-theme-switch';
+import { TTheme } from '@/types/settings';
+
 const sessionStore = useSessionStore();
 
-const themeModel = ref(localStorage.getItem('theme') ?? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+const { currentTheme, setTheme } = useThemeSwitch();
 
-console.log(themeModel.value);
+const themeModel = ref(currentTheme);
 
-const theme = useTheme();
-
-watch(themeModel, () => {
-  console.log(themeModel.value);
-  theme.global.name.value = themeModel.value;
-}, { immediate: true });
+watch(themeModel, (theme) => setTheme(theme as TTheme), { immediate: true });
 </script>
 
 <template>

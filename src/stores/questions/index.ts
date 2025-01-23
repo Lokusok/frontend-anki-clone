@@ -46,8 +46,6 @@ export const useQuestionsStore = defineStore('questionsStore', {
       const response = await questionsService.deleteQuestion(data);
 
       if (response) {
-        console.log({ response });
-
         const foundedIndex = this.questions.findIndex((q) => q.id === data.questionId);
 
         if (foundedIndex !== -1) {

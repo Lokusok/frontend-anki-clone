@@ -93,7 +93,7 @@ export const questionsService = {
         query: data.query,
       }
     });
-    console.log(response.data);
+
     return response.data.data;
   },
 };

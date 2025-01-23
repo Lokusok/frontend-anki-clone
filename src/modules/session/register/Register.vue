@@ -31,8 +31,6 @@ const callbacks = {
 
     const registerErrors = await sessionStore.registerUser(toValue(user));
 
-    console.log({ registerErrors });
-
     waiting.value = false;
 
     if (registerErrors) {

@@ -75,10 +75,6 @@ const drawer = ref(false);
             </v-list-item>
 
             <template v-if="props.isAuth">
-              <v-list-item to="/settings">
-                Настройки
-              </v-list-item>
-
               <v-list-item @click="$emit('logoutClick')">
                 Выйти из аккаунта
               </v-list-item>

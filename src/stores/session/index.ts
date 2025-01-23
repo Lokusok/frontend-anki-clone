@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
+
 import { sessionService } from '@/services/api/session';
+
+import { AUTH_KEY } from '@/config/storage-keys';
+
 import { TUserInputLogin, TUserInputRegister } from '@/types/input/user';
 import { TUser } from '@/types/user';
-
-const AUTH_KEY = 'SESSION';
 
 export const useSessionStore = defineStore('sessionStore', {
   state: () => ({

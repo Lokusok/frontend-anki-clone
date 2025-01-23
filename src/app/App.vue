@@ -2,15 +2,41 @@
 import { watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import Header from '../components/Header.vue';
-import { useSessionStore } from '../stores/session';
-import { accessTo } from '../router';
+import { useSessionStore } from '@/stores/session';
+
+import Header from '@/components/Header.vue';
+
+import { accessTo } from '@/router';
+import { useThemeSwitch } from '@/composables/use-theme-switch';
+import { TTheme } from '@/types/settings';
+import { THEME_KEY } from '@/config/storage-keys';
 
 const sessionStore = useSessionStore();
+sessionStore.startSession();
+
+const { currentTheme, setTheme } = useThemeSwitch();
+
 const router = useRouter();
 const route = useRoute();
 
-sessionStore.startSession();
+const inits = {
+  initTheme: () => {
+    setTheme(localStorage.getItem(THEME_KEY) ?? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' as TTheme);
+  },
+};
+
+const callbacks = {
+  logout: () => {
+    sessionStore.logout();
+    router.push({ name: 'login' });
+  },
+};
+
+inits.initTheme();
+
+watch(currentTheme, () => {
+  localStorage.setItem(THEME_KEY, currentTheme.value);
+});
 
 watch([() => sessionStore.isAuth, () => sessionStore.init], () => {
   if (sessionStore.init) {
@@ -28,7 +54,7 @@ watch([() => sessionStore.isAuth, () => sessionStore.init], () => {
     <Header
       :is-auth="sessionStore.isAuth"
       :waiting="sessionStore.waiting"
-      @logout-click="sessionStore.logout"
+      @logout-click="callbacks.logout"
     />
 
     <v-main v-if="!sessionStore.waiting">

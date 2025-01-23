@@ -56,12 +56,11 @@ const callbacks = {
   },
 
   deleteQuestion: async () => {
-    console.log('here');
     waitQuestionDelete.value = true;
 
-    await questionsStore.deleteQuestion({
+     await questionsStore.deleteQuestion({
       deckId: String(route.params.id),
-      questionId: deleteQuestionId.value,
+      questionId: String(deleteQuestionId.value),
     });
 
     callbacks.resetDeleteQuestionDialog();
