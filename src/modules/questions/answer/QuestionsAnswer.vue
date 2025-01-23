@@ -46,7 +46,7 @@ onUnmounted(() => questionsStore.resetState());
 </script>
 
 <template>
-  <PageLayout title="Вопросы из категории">
+  <PageLayout title="Вопросы из коллекции">
     <CenterWhiteBlock>
       <div
         v-if="questionsStore.waiting"

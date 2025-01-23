@@ -6,6 +6,10 @@
       elevation="10"
       class="pa-3 mx-3 rounded-lg"
     >
+      <template v-if="$slots.header">
+        <slot name="header"></slot>
+        <v-divider class="my-3"></v-divider>
+      </template>
       <slot></slot>
     </v-sheet>
   </div>

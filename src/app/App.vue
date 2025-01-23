@@ -8,10 +8,13 @@ import Header from '@/components/Header.vue';
 
 import { accessTo } from '@/router';
 import { useThemeSwitch } from '@/composables/use-theme-switch';
-import { TTheme } from '@/types/settings';
 import { THEME_KEY } from '@/config/storage-keys';
+import { useStatsStore } from '@/stores/stats';
+
+import { TTheme } from '@/types/settings';
 
 const sessionStore = useSessionStore();
+const statsStore = useStatsStore();
 sessionStore.startSession();
 
 const { currentTheme, setTheme } = useThemeSwitch();
@@ -23,6 +26,10 @@ const inits = {
   initTheme: () => {
     setTheme(localStorage.getItem(THEME_KEY) ?? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' as TTheme);
   },
+
+  initStats: () => {
+    statsStore.getStats();
+  },
 };
 
 const callbacks = {
@@ -33,6 +40,7 @@ const callbacks = {
 };
 
 inits.initTheme();
+inits.initStats();
 
 watch(currentTheme, () => {
   localStorage.setItem(THEME_KEY, currentTheme.value);

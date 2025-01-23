@@ -17,6 +17,7 @@ import QuestionsAnswer from './modules/questions/answer/QuestionsAnswer.vue';
 import Login from './modules/session/login/Login.vue';
 import Register from './modules/session/register/Register.vue';
 import Profile from './modules/session/profile/Profile.vue';
+import ProfileEdit from './modules/session/profile/ProfileEdit.vue';
 
 const routes = [
   {
@@ -107,15 +108,26 @@ const routes = [
       title: 'Профиль',
     },
   },
+  {
+    path: '/profile/edit',
+    component: ProfileEdit,
+    name: 'profile.edit',
+    meta: {
+      title: 'Редактирование профиля',
+    },
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior: () => {
+    return { top: 0 };
+  },
 });
 
 const onlyGuests = ['login', 'register'];
-const onlyAuth = ['decks.index', 'decks.create', 'decks.search', 'questions.create', 'questions.answer', 'profile'];
+const onlyAuth = ['decks.index', 'decks.create', 'decks.search', 'questions.create', 'questions.answer', 'profile', 'profile.edit'];
 
 export const accessTo = (to: RouteLocationNormalizedGeneric): boolean => {
   const sessionStore = useSessionStore();

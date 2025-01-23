@@ -6,6 +6,8 @@ import { AUTH_KEY } from '@/config/storage-keys';
 
 import { TUserInputLogin, TUserInputRegister } from '@/types/input/user';
 import { TUser } from '@/types/user';
+import { TProfileUpdate } from '@/types/input/profile';
+import { TError } from '@/types/api/error';
 
 export const useSessionStore = defineStore('sessionStore', {
   state: () => ({
@@ -89,6 +91,17 @@ export const useSessionStore = defineStore('sessionStore', {
 
     userToStorage(user: TUser) {
       localStorage.setItem(AUTH_KEY, JSON.stringify({ name: user.name, email: user.email }));
+    },
+
+    async updateQuestion(data: TProfileUpdate): Promise<TError | null> {
+      const updatedUser = await sessionService.updateProfile(data);
+
+      if (updatedUser) {
+        this.session.name = updatedUser.name;
+        this.session.email = updatedUser.email;
+      }
+
+      return updatedUser;
     },
 
     logout() {

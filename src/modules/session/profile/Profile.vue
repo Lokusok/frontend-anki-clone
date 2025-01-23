@@ -41,5 +41,23 @@ watch(themeModel, (theme) => setTheme(theme as TTheme), { immediate: true });
         </div>
       </div>
     </CenterWhiteBlock>
+
+    <v-divider class="my-5"></v-divider>
+
+    <CenterWhiteBlock>
+      <div class="d-flex justify-center ga-3">
+        <v-btn :to="{ name: 'profile.edit' }" color="primary">
+          <template #prepend>
+            <v-icon icon="mdi-account-edit"></v-icon>
+            Изменить данные
+          </template>
+        </v-btn>
+
+        <v-btn color="secondary">
+          <v-icon icon="mdi-progress-question"></v-icon>
+          Сброс пароля
+        </v-btn>
+      </div>
+    </CenterWhiteBlock>
   </PageLayout>
 </template>

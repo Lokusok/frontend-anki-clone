@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 
 import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
 import PageLayout from '@/components/layouts/PageLayout.vue';
+import BackButton from '@/components/BackButton.vue';
 
 import { useDeckStore } from '@/stores/decks';
 import { useQuestionsStore } from '@/stores/questions';
@@ -82,25 +83,14 @@ Promise.all([
   inits.loadDecksTitles(),
   inits.loadCurrentQuestion(),
 ]).finally(() => (waitingInit.value = false));
-
-const isHaveBack = window.history.state.back;
 </script>
 
 <template>
   <PageLayout title="Обновление вопроса">
     <CenterWhiteBlock>
-      <v-btn
-        v-if="isHaveBack"
-        :to="isHaveBack"
-        color="primary"
-      >
-        <template #prepend>
-          <v-icon icon="mdi-arrow-left-bold-circle" />
-        </template>
-        Назад
-      </v-btn>
-
-      <v-divider class="ma-3"></v-divider>
+      <template #header>
+        <BackButton />
+      </template>
 
       <form @submit.prevent="callbacks.updateQuestion">
         <v-select
