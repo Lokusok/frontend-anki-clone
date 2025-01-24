@@ -40,7 +40,12 @@ const callbacks = {
 };
 
 inits.initTheme();
-inits.initStats();
+
+watch([() => sessionStore.isAuth], () => {
+  if (sessionStore.isAuth) {
+    inits.initStats();
+  }
+});
 
 watch(currentTheme, () => {
   localStorage.setItem(THEME_KEY, currentTheme.value);
