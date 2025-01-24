@@ -34,6 +34,10 @@ const callbacks = {
       errors.value.email = loginErrors.errors.email?.[0];
       errors.value.password = loginErrors.errors.password?.[0];
     } else {
+      errors.value.message = '';
+      errors.value.email = '';
+      errors.value.password = '';
+
       router.replace({ name: 'profile' });
     }
   

@@ -6,24 +6,10 @@ import {
 
 import { useSessionStore } from './stores/session';
 
-import HomeView from './modules/home/HomeView.vue';
-import DecksIndex from './modules/decks/index/DecksIndex.vue';
-import DecksCreate from './modules/decks/create/DecksCreate.vue';
-import DecksSearch from './modules/decks/search/DecksSearch.vue';
-import DecksEdit from './modules/decks/edit/DecksEdit.vue';
-import QuestionsCreate from './modules/questions/create/QuestionsCreate.vue';
-import QuestionsEdit from './modules/questions/edit/QuestionsEdit.vue';
-import QuestionsAnswer from './modules/questions/answer/QuestionsAnswer.vue';
-import Login from './modules/session/login/Login.vue';
-import Register from './modules/session/register/Register.vue';
-import Profile from './modules/session/profile/Profile.vue';
-import ProfileEdit from './modules/session/profile/ProfileEdit.vue';
-import ForgotPassword from './modules/session/credentials/ForgotPassword.vue';
-
 const routes = [
   {
     path: '/',
-    component: HomeView,
+    component: () => import('./modules/home/HomeView.vue'),
     name: 'home',
     meta: {
       title: 'Главная',
@@ -31,7 +17,7 @@ const routes = [
   },
   {
     path: '/decks',
-    component: DecksIndex,
+    component: () => import('./modules/decks/index/DecksIndex.vue'),
     name: 'decks.index',
     meta: {
       title: 'Коллекции',
@@ -39,7 +25,7 @@ const routes = [
   },
   {
     path: '/decks/create',
-    component: DecksCreate,
+    component: () => import('./modules/decks/create/DecksCreate.vue'),
     name: 'decks.create',
     meta: {
       title: 'Создать коллекцию',
@@ -47,7 +33,7 @@ const routes = [
   },
   {
     path: '/decks/search',
-    component: DecksSearch,
+    component: () => import('./modules/decks/search/DecksSearch.vue'),
     name: 'decks.search',
     meta: {
       title: 'Поиск коллекции',
@@ -55,7 +41,7 @@ const routes = [
   },
   {
     path: '/decks/:id/edit',
-    component: DecksEdit,
+    component: () => import('./modules/decks/edit/DecksEdit.vue'),
     name: 'decks.edit',
     meta: {
       title: 'Изменение коллекции',
@@ -63,7 +49,7 @@ const routes = [
   },
   {
     path: '/questions/create',
-    component: QuestionsCreate,
+    component: () => import('./modules/questions/create/QuestionsCreate.vue'),
     name: 'questions.create',
     meta: {
       title: 'Создание вопроса',
@@ -71,7 +57,7 @@ const routes = [
   },
   {
     path: '/decks/:deckId/questions/:questionId/edit',
-    component: QuestionsEdit,
+    component: () => import('./modules/questions/edit/QuestionsEdit.vue'),
     name: 'questions.edit',
     meta: {
       title: 'Обновление вопроса',
@@ -79,7 +65,7 @@ const routes = [
   },
   {
     path: '/decks/:deckId/questions/answer',
-    component: QuestionsAnswer,
+    component: () => import('./modules/questions/answer/QuestionsAnswer.vue'),
     name: 'questions.answer',
     meta: {
       title: 'Ответы на вопросы',
@@ -87,7 +73,7 @@ const routes = [
   },
   {
     path: '/login',
-    component: Login,
+    component: () => import('./modules/session/login/Login.vue'),
     name: 'login',
     meta: {
       title: 'Вход',
@@ -95,7 +81,7 @@ const routes = [
   },
   {
     path: '/register',
-    component: Register,
+    component: () => import('./modules/session/register/Register.vue'),
     name: 'register',
     meta: {
       title: 'Регистрация',
@@ -103,7 +89,7 @@ const routes = [
   },
   {
     path: '/profile',
-    component: Profile,
+    component: () => import('./modules/session/profile/Profile.vue'),
     name: 'profile',
     meta: {
       title: 'Профиль',
@@ -111,15 +97,23 @@ const routes = [
   },
   {
     path: '/forgot-password',
-    component: ForgotPassword,
+    component: () => import('./modules/session/profile/ProfileEdit.vue'),
     name: 'forgot-password',
     meta: {
       title: 'Восстановление пароля',
     },
   },
   {
+      path: '/password-reset/:token',
+      component: () => import('./modules/session/credentials/forgot-password/EnterNewPassword.vue'),
+      name: 'forgot-password.enter-new',
+      meta: {
+        title: 'Введите новый пароль'
+      },
+  },
+  {
     path: '/profile/edit',
-    component: ProfileEdit,
+    component: () => import('./modules/session/profile/ProfileEdit.vue'),
     name: 'profile.edit',
     meta: {
       title: 'Редактирование профиля',
@@ -135,7 +129,7 @@ const router = createRouter({
   },
 });
 
-const onlyGuests = ['login', 'register', 'forgot-password'];
+const onlyGuests = ['login', 'register', 'forgot-password', 'forgot-password.enter-new'];
 const onlyAuth = ['decks.index', 'decks.create', 'decks.search', 'questions.create', 'questions.answer', 'profile', 'profile.edit'];
 
 export const accessTo = (to: RouteLocationNormalizedGeneric): boolean => {

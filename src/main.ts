@@ -5,6 +5,7 @@ import { createPinia } from 'pinia';
 
 import './globals.css';
 
+// @ts-ignore
 import 'vuetify/styles';
 import '@mdi/font/css/materialdesignicons.css' 
 import { createVuetify } from 'vuetify';

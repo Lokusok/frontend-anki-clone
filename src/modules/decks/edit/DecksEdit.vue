@@ -34,7 +34,10 @@ const deck = ref({
 const inits = {
   getCurrentDeck: async () => {
     const fetchedDeck = await decksStore.getDeck(Number(route.params.id));
-    deck.value.title = fetchedDeck.title;
+
+    if (fetchedDeck) {
+      deck.value.title = fetchedDeck.title;
+    }
   },
 };
 

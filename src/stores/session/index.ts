@@ -8,6 +8,7 @@ import { TUserInputLogin, TUserInputRegister } from '@/types/input/user';
 import { TUser } from '@/types/user';
 import { TProfileUpdate } from '@/types/input/profile';
 import { TError } from '@/types/api/error';
+import { TChangePasswordInput, TResetPasswordInput, TSendResetLinkInput } from '@/types/input/credentials';
 
 export const useSessionStore = defineStore('sessionStore', {
   state: () => ({
@@ -89,8 +90,18 @@ export const useSessionStore = defineStore('sessionStore', {
       this.waiting = false;
     },
 
-    async changePassword(data: any): Promise<TError | null> {
+    async changePassword(data: TChangePasswordInput): Promise<TError | null> {
       const response = await sessionService.changePassword(data);
+      return response;
+    },
+
+    async resetPassword(data: TResetPasswordInput): Promise<TError | null> {
+      const response = await sessionService.resetPassword(data);
+      return response;
+    },
+
+    async sendResetLink(data: TSendResetLinkInput): Promise<TError | null> {
+      const response = await sessionService.sendResetLink(data);
       return response;
     },
 

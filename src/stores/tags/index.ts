@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 import { tagsService } from "../../services/api/tags";
+import { TTag } from "@/types/tag";
 
 export const useTagsStore = defineStore('tagsStore', {
     state: () => ({
         waiting: false,
-        tags: [],
+        tags: [] as TTag[],
     }),
     actions: {
         async getAllTags() {

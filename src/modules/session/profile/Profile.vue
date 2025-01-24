@@ -55,8 +55,6 @@ const callbacks = {
 
     waitingChangePassword.value = false;
 
-    console.log(changePasswordErrors);
-
     if (changePasswordErrors) {
       errors.value.message = changePasswordErrors.message;
 

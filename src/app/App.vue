@@ -8,9 +8,9 @@ import Header from '@/components/Header.vue';
 
 import { accessTo } from '@/router';
 import { useThemeSwitch } from '@/composables/use-theme-switch';
-import { THEME_KEY } from '@/config/storage-keys';
 import { useStatsStore } from '@/stores/stats';
 
+import { THEME_KEY } from '@/config/storage-keys';
 import { TTheme } from '@/types/settings';
 
 const sessionStore = useSessionStore();
@@ -41,11 +41,11 @@ const callbacks = {
 
 inits.initTheme();
 
-watch([() => sessionStore.isAuth], () => {
+watch(() => sessionStore.isAuth, () => {
   if (sessionStore.isAuth) {
     inits.initStats();
   }
-});
+}, { immediate: true });
 
 watch(currentTheme, () => {
   localStorage.setItem(THEME_KEY, currentTheme.value);

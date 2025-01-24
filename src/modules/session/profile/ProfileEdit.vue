@@ -37,8 +37,6 @@ const callbacks = {
       email: formState.value.email,
     });
 
-    console.log(response);
-
     if (response?.errors) {
       errors.value.email = response.errors.email?.[0];
       errors.value.name = response.errors.name?.[0];
