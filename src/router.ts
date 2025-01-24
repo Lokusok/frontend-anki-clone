@@ -18,6 +18,7 @@ import Login from './modules/session/login/Login.vue';
 import Register from './modules/session/register/Register.vue';
 import Profile from './modules/session/profile/Profile.vue';
 import ProfileEdit from './modules/session/profile/ProfileEdit.vue';
+import ForgotPassword from './modules/session/credentials/ForgotPassword.vue';
 
 const routes = [
   {
@@ -109,6 +110,14 @@ const routes = [
     },
   },
   {
+    path: '/forgot-password',
+    component: ForgotPassword,
+    name: 'forgot-password',
+    meta: {
+      title: 'Восстановление пароля',
+    },
+  },
+  {
     path: '/profile/edit',
     component: ProfileEdit,
     name: 'profile.edit',
@@ -126,7 +135,7 @@ const router = createRouter({
   },
 });
 
-const onlyGuests = ['login', 'register'];
+const onlyGuests = ['login', 'register', 'forgot-password'];
 const onlyAuth = ['decks.index', 'decks.create', 'decks.search', 'questions.create', 'questions.answer', 'profile', 'profile.edit'];
 
 export const accessTo = (to: RouteLocationNormalizedGeneric): boolean => {

@@ -62,6 +62,10 @@ const callbacks = {
           label="Пароль"
         />
 
+        <div class="py-3">
+          <router-link :to="{ name: 'forgot-password' }">Забыли пароль?</router-link>
+        </div>
+
         <div class="d-flex justify-space-between align-center">
           <v-btn
             :disabled="isSubmitDisabled || waiting"

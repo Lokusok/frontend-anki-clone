@@ -55,6 +55,23 @@ export const sessionService = {
     }
   },
 
+  async changePassword(data: any): Promise<TError | null> {
+    try {
+      await apiClient.post('/change-password', {
+        current_password: data.currentPassword,
+        new_password: data.newPassword,
+      });
+
+      return null;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return error.response?.data;
+      }
+
+      return null;
+    }
+  },
+
   async logout(): Promise<TUser | null> {
     try {
       const response = await apiClient.post('/logout');

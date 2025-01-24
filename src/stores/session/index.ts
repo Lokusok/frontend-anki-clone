@@ -89,6 +89,11 @@ export const useSessionStore = defineStore('sessionStore', {
       this.waiting = false;
     },
 
+    async changePassword(data: any): Promise<TError | null> {
+      const response = await sessionService.changePassword(data);
+      return response;
+    },
+
     userToStorage(user: TUser) {
       localStorage.setItem(AUTH_KEY, JSON.stringify({ name: user.name, email: user.email }));
     },
