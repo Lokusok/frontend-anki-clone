@@ -92,6 +92,7 @@ const callbacks = {
         <div class="d-flex justify-space-between align-center">
           <v-btn
             :disabled="isSubmitDisabled || waiting"
+            :loading="waiting"
             type="submit"
             color="primary"
           >

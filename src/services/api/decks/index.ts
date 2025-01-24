@@ -1,13 +1,19 @@
+import { TError } from '@/types/api/error';
 import { apiClient } from '..';
 import { TDeck } from '../../../types/deck';
 import { TDeckInput, TDeckSearchInput } from '../../../types/input/deck';
+import { AxiosError } from 'axios';
 
 export const decksService = {
-    async createDeck(data: TDeckInput): Promise<TDeck | null> {
+    async createDeck(data: TDeckInput): Promise<TDeck | TError | null> {
         try {
             const response = await apiClient.post('/api/v1/decks', data);
             return response.data;
-        } catch {
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return error.response?.data;
+            }
+
             return null;
         }
     },

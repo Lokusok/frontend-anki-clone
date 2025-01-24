@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, toValue } from 'vue';
+import { ref } from 'vue';
+
+import { useFormState } from '@/composables/use-form-state';
 
 import { useDeckStore } from '@/stores/decks';
 import CenterWhiteBlock from '@/components/CenterWhiteBlock.vue';
@@ -10,23 +12,34 @@ const deckStore = useDeckStore();
 const waiting = ref(false);
 const successSnack = ref(false);
 
-const deck = ref({
+const { data: formState, errors, isSubmitDisabled } = useFormState({
   title: '',
-});
-
-const isSubmitBtnDisabled = computed(() => {
-  return !deck.value.title;
 });
 
 const callbacks = {
   createDeck: async () => {
     waiting.value = true;
   
-    await deckStore.createDeck(toValue(deck));
+    const createDeckErrors = await deckStore.createDeck({
+      title: formState.value.title,
+    });
+
+    console.log(createDeckErrors);
+
+    if (createDeckErrors) {
+      errors.value.message = createDeckErrors.message;
+      errors.value.title = createDeckErrors.errors.title?.[0];
+
+      waiting.value = false;
+      return;
+    } else {
+      errors.value.message = '';
+      errors.value.title = '';
+    }
   
     waiting.value = false;
   
-    deck.value.title = '';
+    formState.value.title = '';
   
     successSnack.value = true;
   },
@@ -38,12 +51,14 @@ const callbacks = {
     <CenterWhiteBlock>
       <form @submit.prevent="callbacks.createDeck">
         <v-text-field
-          v-model="deck.title"
+          v-model="formState.title"
           :disabled="waiting"
+          :error-messages="errors.title"
           label="Название коллекции"
         />
         <v-btn
-          :disabled="isSubmitBtnDisabled || waiting"
+          :disabled="isSubmitDisabled || waiting"
+          :loading="waiting"
           type="submit"
           color="primary"
           >Создать</v-btn
