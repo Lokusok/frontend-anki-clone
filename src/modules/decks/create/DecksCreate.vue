@@ -24,8 +24,6 @@ const callbacks = {
       title: formState.value.title,
     });
 
-    console.log(createDeckErrors);
-
     if (createDeckErrors) {
       errors.value.message = createDeckErrors.message;
       errors.value.title = createDeckErrors.errors.title?.[0];

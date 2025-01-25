@@ -1,9 +1,9 @@
 import { apiClient } from '..';
 
 import { AxiosError } from 'axios';
-import { TUser } from '../../../types/user';
-import { TError } from '../../../types/api/error';
-import { TUserInputRegister, TUserInputLogin } from '../../../types/input/user';
+import { TUser } from '@/types/user';
+import { TError } from '@/types/api/error';
+import { TUserInputRegister, TUserInputLogin } from '@/types/input/user';
 import { TProfileUpdate } from '@/types/input/profile';
 import { TChangePasswordInput, TResetPasswordInput, TSendResetLinkInput } from '@/types/input/credentials';
 

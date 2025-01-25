@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
-import { questionsService } from '../../services/api/questions';
-import { TQuestionDeleteInput, TQuestionInput, TQuestionsGetInput, TQuestionsSearch } from '../../types/input/question';
+import { questionsService } from '@/services/api/questions';
+import { TQuestionDeleteInput, TQuestionInput, TQuestionsGetInput, TQuestionsSearch } from '@/types/input/question';
 
 import { TQuestion } from '@/types/question';
 import { TDeck } from '@/types/deck';

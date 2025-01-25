@@ -1,8 +1,9 @@
-import { TError } from '@/types/api/error';
-import { apiClient } from '..';
-import { TDeck } from '../../../types/deck';
-import { TDeckInput, TDeckSearchInput } from '../../../types/input/deck';
 import { AxiosError } from 'axios';
+import { apiClient } from '..';
+
+import { TError } from '@/types/api/error';
+import { TDeck } from '@/types/deck';
+import { TDeckInput, TDeckSearchInput } from '@/types/input/deck';
 
 export const decksService = {
     async createDeck(data: TDeckInput): Promise<TDeck | TError | null> {

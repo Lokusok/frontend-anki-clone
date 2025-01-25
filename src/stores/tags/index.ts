@@ -1,23 +1,23 @@
-import { defineStore } from "pinia";
-import { tagsService } from "../../services/api/tags";
-import { TTag } from "@/types/tag";
+import { defineStore } from 'pinia';
+import { tagsService } from '@/services/api/tags';
+import { TTag } from '@/types/tag';
 
 export const useTagsStore = defineStore('tagsStore', {
-    state: () => ({
-        waiting: false,
-        tags: [] as TTag[],
-    }),
-    actions: {
-        async getAllTags() {
-            this.waiting = true;
+  state: () => ({
+    waiting: false,
+    tags: [] as TTag[],
+  }),
+  actions: {
+    async getAllTags() {
+      this.waiting = true;
 
-            const tags = await tagsService.getAllTags();
+      const tags = await tagsService.getAllTags();
 
-            if (tags) {
-                this.tags = tags;
-            }
+      if (tags) {
+        this.tags = tags;
+      }
 
-            this.waiting = false;
-        },
+      this.waiting = false;
     },
+  },
 });
